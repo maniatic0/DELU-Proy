@@ -37,7 +37,12 @@ public class CameraProy : MonoBehaviour
     /// <summary>
     /// Seno del Angulo inverso, usado para cambio de proyeccion 
     /// </summary>
-    private float inv_angle;
+    private float invSinAngle;
+
+    /// <summary>
+    /// Coseno del Angulo inverso, usado para cambio de proyeccion 
+    /// </summary>
+    private float invCosAngle;
 
 
     /// <summary>
@@ -61,20 +66,23 @@ public class CameraProy : MonoBehaviour
     {
         #if UNITY_EDITOR
         CalculateAngle();
-        CalculateZoom();
         #endif // UNITY_EDITOR
         CalculateProjection();
     }
 
     /// <summary>
     /// Cambiar la proyeccion de la camara para arreglar sprites
+    /// Basado en https://www.youtube.com/watch?v=zPQOHX9hiL0&feature=youtu.be&t=14m54s
     /// </summary>
     public void CalculateProjection()
     {
         cam.ResetProjectionMatrix();
 
         prevProy = cam.projectionMatrix;
-        prevProy[1, 1] *= inv_angle;
+        prevProy[1, 1] *= invCosAngle;
+        prevProy[2, 2] *= invSinAngle;
+        prevProy[2, 3] *= invSinAngle;
+        prevProy[3, 2] *= invSinAngle;
         cam.projectionMatrix = prevProy;
 
     }
@@ -89,11 +97,16 @@ public class CameraProy : MonoBehaviour
 
     /// <summary>
     /// Calular los efectos del angulo sobre la camara
+    /// Basado en https://www.youtube.com/watch?v=zPQOHX9hiL0&feature=youtu.be&t=14m54s
     /// </summary>
     public void CalculateAngle() {
-        inv_angle = 1.0f / Mathf.Sin(angle); // Invertir efecto de squash causado por el angulo
+        invSinAngle = 1.0f / Mathf.Sin(angle * Mathf.Deg2Rad); // Invertir efecto de squash causado por el angulo
+        invCosAngle = 1.0f / Mathf.Cos(angle * Mathf.Deg2Rad); // Invertir efecto de squash causado por el angulo
+        
         // Vector Zoom viene de Vector contra el angulo del eje x
-        zoomVector = Quaternion.AngleAxis(angle, Vector3.right) * Vector3.up;
+        cam.transform.rotation = Quaternion.AngleAxis(angle, Vector3.right);
+        zoomVector = cam.transform.rotation * Vector3.forward;
+        zoomVector.y *= -1.0f; // Invertir Y para camara
         zoomVector.z *= -1.0f; // Invertir Z para camara
         CalculateZoom();
     }
