@@ -1,6 +1,6 @@
 using UnityEngine;
 
-
+[ExecuteInEditMode]
 public class CameraProy : MonoBehaviour
 {
     /// <summary>
@@ -20,7 +20,7 @@ public class CameraProy : MonoBehaviour
     /// <summary>
     /// Angulo de la camara contra eje X
     /// </summary>
-    public float Angle { get { return angle; } set { angle = value; CalculateProjection(); } }
+    public float Angle { get { return angle; } set { angle = value; CalculateAngle(); } }
 
     /// <summary>
     /// Nivel de Zoom de la Camara
@@ -50,36 +50,32 @@ public class CameraProy : MonoBehaviour
     /// </summary>
     private Vector3 zoomVector;
 
-    private void Awake()
-    {
-        CalculateProjection();
+    private void Awake() {
+        if (cam == null)
+        {
+            cam = Camera.main;
+        }
     }
 
-#if UNITY_EDITOR
     private void OnPreCull()
     {
-        CalculateProjection();
+        #if UNITY_EDITOR
+        CalculateAngle();
         CalculateZoom();
+        #endif // UNITY_EDITOR
+        CalculateProjection();
     }
-#endif
 
     /// <summary>
     /// Cambiar la proyeccion de la camara para arreglar sprites
     /// </summary>
     public void CalculateProjection()
     {
-        inv_angle = 1.0f / Mathf.Sin(angle); // Invertir efecto de squash causado por el angulo
-
         cam.ResetProjectionMatrix();
 
         prevProy = cam.projectionMatrix;
         prevProy[1, 1] *= inv_angle;
         cam.projectionMatrix = prevProy;
-
-        // Vector Zoom viene de Vector contra el angulo del eje x
-        zoomVector = Quaternion.AngleAxis(angle, Vector3.right) * Vector3.up;
-        zoomVector.z *= -1.0f; // Invertir Z para camara
-        CalculateZoom();
 
     }
 
@@ -89,5 +85,16 @@ public class CameraProy : MonoBehaviour
     public void CalculateZoom()
     {
         cam.transform.localPosition = zoomLevel * zoomVector;
+    }
+
+    /// <summary>
+    /// Calular los efectos del angulo sobre la camara
+    /// </summary>
+    public void CalculateAngle() {
+        inv_angle = 1.0f / Mathf.Sin(angle); // Invertir efecto de squash causado por el angulo
+        // Vector Zoom viene de Vector contra el angulo del eje x
+        zoomVector = Quaternion.AngleAxis(angle, Vector3.right) * Vector3.up;
+        zoomVector.z *= -1.0f; // Invertir Z para camara
+        CalculateZoom();
     }
 }
