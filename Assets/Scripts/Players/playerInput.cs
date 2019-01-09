@@ -3,7 +3,7 @@ using UnityEngine;
 /// <summary>
 /// Manejador de Inputs del jugador
 /// </summary>
-public class playerInput : MonoBehaviour
+public class PlayerInput : MonoBehaviour
 {
 
     /// <summary>
@@ -11,7 +11,7 @@ public class playerInput : MonoBehaviour
     /// Solo existe uno a la vez
     /// </summary>
     /// <value></value>
-    public static playerInput Manager { get; private set; }
+    public static PlayerInput Manager { get; private set; }
 
     /// <summary>
     /// Vector de Input de los Axis Horizontal y Vertical
