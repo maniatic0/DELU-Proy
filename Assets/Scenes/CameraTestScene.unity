@@ -326,6 +326,7 @@ GameObject:
   - component: {fileID: 1622877024}
   - component: {fileID: 1622877027}
   - component: {fileID: 1622877028}
+  - component: {fileID: 1622877029}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -479,6 +480,18 @@ CapsuleCollider:
   m_Height: 1.8699999
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1622877029
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1622877020}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 38bb917e09e4522458ae01854e70ddd6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1624405206
 GameObject:
   m_ObjectHideFlags: 0
@@ -787,6 +800,7 @@ GameObject:
   - component: {fileID: 1704196169}
   - component: {fileID: 1704196171}
   - component: {fileID: 1704196170}
+  - component: {fileID: 1704196172}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Untagged
@@ -950,6 +964,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   receiveShadow: 1
   shadowCastingMode: 2
+--- !u!114 &1704196172
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1704196162}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 38bb917e09e4522458ae01854e70ddd6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1807256365
 GameObject:
   m_ObjectHideFlags: 0
