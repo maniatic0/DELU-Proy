@@ -3,6 +3,9 @@
 
 Proyecto Trimestral de la agrupación DELU de la USB
 
+## Reglas de Organización
+Juntar objetos (ej, scripts, arte, etc) en carpetas comunes. Por ejemplo, todos los sprites de un mismo enemigo deben estar en una misma carpeta y tener nombres descriptivos de lo que son. Para los scripts por ejemplo, si se tiene un script de movimiento de humanoide y vida de humanoide, ambos deberían estar en una carpeta llamada humanoide.
+
 ## Reglas de Push
 
 * Siempre hacer pull antes de comenzar cualquier trabajo, esto es con el fin de evitar trabajar con cosas que han sido remplazadas.
