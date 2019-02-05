@@ -135,7 +135,7 @@ public class LifeManager : MonoBehaviour
     /// <summary>
     /// Revivir al jugador
     /// </summary>
-    public protected void Revive() {
+    public virtual void Revive() {
         life = maxLife;
         onLifeReStart.Invoke(this);
     }
