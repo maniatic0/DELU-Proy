@@ -43,15 +43,27 @@ public class LifeManager : MonoBehaviour
     /// <summary>
     /// Efectos a aplicar en update
     /// </summary>
-    /// <typeparam name="EffectType"></typeparam>
+    /// <typeparam name="EffectInfo"></typeparam>
     /// <returns></returns>
-    private List<EffectType> continueApplying = new List<EffectType>();
+    private List<EffectInfo> continueApplying = new List<EffectInfo>();
 
     /// <summary>
     /// Funciones para llamar cuando la cantidad de vida cambia
     /// </summary>
     [Tooltip("Funciones para llamar cuando la cantidad de vida cambia")]
     public LifetEvent onLifeChange;
+
+    /// <summary>
+    /// Funciones para llamar cuando la cantidad de vida cambia de forma positiva
+    /// </summary>
+    [Tooltip("Funciones para llamar cuando la cantidad de vida cambia de forma positiva")]
+    public LifetEvent onLifeChangeHeal;
+
+    /// <summary>
+    /// Funciones para llamar cuando la cantidad de vida cambia de forma negativa
+    /// </summary>
+    [Tooltip("Funciones para llamar cuando la cantidad de vida cambia de forma negativa")]
+    public LifetEvent onLifeChangeDamage;
 
     /// <summary>
     /// Funciones para llamar cuando muere el humanoide
@@ -80,12 +92,16 @@ public class LifeManager : MonoBehaviour
     {
         for (int i = continueApplying.Count; i > 0; i--)
         {
-            if (!continueApplying[i].ContinueApplyingChange(Time.deltaTime, this)) {
+            if (!continueApplying[i].effect.ContinueApplyingChange(
+                Time.deltaTime, 
+                this, 
+                continueApplying[i])
+                ) {
                 continueApplying.RemoveAt(i);
             }
             else
             {
-                ChangeLife(continueApplying[i].ApplyChange(this));
+                ChangeLife(continueApplying[i].effect.ApplyChange(this, continueApplying[i]));
             }
         }
     }
@@ -94,13 +110,13 @@ public class LifeManager : MonoBehaviour
     /// Aplicar cambio a la vida
     /// </summary>
     /// <param name="effect">Cambio a Aplicar</param>
-    protected virtual void ApplyChange(EffectType effect) {
-        if (effect.ApplyMoreThanOnce)
+    public virtual void ApplyChange(EffectInfo effectInfo) {
+        if (effectInfo.effect.ApplyMoreThanOnce)
         {
-            continueApplying.Add(effect);
+            continueApplying.Add(effectInfo);
         }
         else {
-            ChangeLife(effect.ApplyChange(this));
+            ChangeLife(effectInfo.effect.ApplyChange(this, effectInfo));
         }
     }
 
@@ -108,8 +124,14 @@ public class LifeManager : MonoBehaviour
     /// Aplicar el cambio de vida
     /// </summary>
     /// <param name="change">Cambio a aplicar</param>
-    protected void ChangeLife(float change) {
-        life += change;
+    protected void ChangeLife(EffectOutput effectChange) {
+
+        if (Mathf.Approximately(effectChange.lifeChange, 0.0f))
+        {
+            return;
+        }
+
+        life += effectChange.lifeChange;
 
         if (life > maxLife)
         {
@@ -125,6 +147,13 @@ public class LifeManager : MonoBehaviour
              
         onLifeChange.Invoke(this);
 
+        if (effectChange.lifeChange >= 0)
+        {
+            onLifeChangeHeal.Invoke(this);
+        } else {
+            onLifeChangeDamage.Invoke(this);
+        }
+
         if (death)
         {
             onLifeEnd.Invoke(this);
@@ -138,5 +167,13 @@ public class LifeManager : MonoBehaviour
     public virtual void Revive() {
         life = maxLife;
         onLifeReStart.Invoke(this);
+    }
+
+    /// <summary>
+    /// Muestra en Consola el Cambio de Vida
+    /// </summary>
+    /// <param name="lm">LifeManager a medir</param>
+    public void DebugLifeChange(LifeManager lm) {
+        Debug.Log("LifeChange " + lm.Life.ToString(), lm);
     }
 }

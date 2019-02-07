@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 562396562936926489afe47e33f279a8, type: 3}
   m_Name: TestDamage
   m_EditorClassIdentifier: 
-  basicChange: 0
   applyMoreThanOnce: 0
+  basicDamage: 1

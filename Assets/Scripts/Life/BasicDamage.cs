@@ -12,12 +12,17 @@ public class BasicDamage : EffectType {
     [SerializeField]
     protected float basicDamage = 0;
 
+    
     /// <summary>
     /// Daño a aplicar
     /// </summary>
     /// <param name="mg">Manejador de Vida al se le esta aplicando el Daño</param>
+    /// <param name="info">Informacion del generador del daño</param>
     /// <returns>Daño a aplicar</returns>
-    public override float ApplyChange(LifeManager mg) {
-        return -basicDamage;
+    public override EffectOutput ApplyChange(LifeManager mg, EffectInfo info) {
+
+        EffectOutput ans;
+        ans.lifeChange = -basicDamage;
+        return ans;
     }
 }

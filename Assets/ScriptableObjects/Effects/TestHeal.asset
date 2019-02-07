@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: cb64c018f5127e24eac5595c6aa7da3c, type: 3}
-  m_Name: Data
+  m_Name: TestHeal
   m_EditorClassIdentifier: 
   applyMoreThanOnce: 0
-  basicHeal: 0
+  basicHeal: 2

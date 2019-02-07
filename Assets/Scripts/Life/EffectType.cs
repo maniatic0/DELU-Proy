@@ -17,18 +17,26 @@ public class EffectType : ScriptableObject {
     /// </summary>
     /// <param name="delta">Delta Time</param>
     /// <param name="mg">Manejador de Vida al que se le continua aplicando el cambio</param>
+    /// <param name="info">Info del generador del cambio</param>
     /// <returns>Si se continua aplicando el cambio</returns>
-    public virtual bool ContinueApplyingChange(float delta, LifeManager mg) {
+    public virtual bool ContinueApplyingChange(float delta, LifeManager mg, EffectInfo info) {
         return false;
     }
 
+    
     /// <summary>
     /// Cambio a aplicar
     /// </summary>
     /// <param name="mg">Manejador de Vida al se le esta aplicando el cambio</param>
+    /// <param name="info">Info del generador del cambio</param>
     /// <returns>Cambio a aplicar</returns>
-    public virtual float ApplyChange(LifeManager mg) {
-        return 0;
+    public virtual EffectOutput ApplyChange(LifeManager mg, EffectInfo info) {
+
+        EffectOutput ans;
+
+        ans.lifeChange = 0;
+
+        return ans;
     }
 
 }

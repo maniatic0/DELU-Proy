@@ -16,8 +16,11 @@ public class BasicHeal : EffectType {
     /// Curacion a aplicar
     /// </summary>
     /// <param name="mg">Manejador de Vida al se le esta aplicando la curacion</param>
+    /// <param name="info">Info del generador de la curacion</param>
     /// <returns>Curacion a aplicar</returns>
-    public override float ApplyChange(LifeManager mg) {
-        return -basicHeal;
+    public override EffectOutput ApplyChange(LifeManager mg, EffectInfo info) {
+        EffectOutput ans;
+        ans.lifeChange = basicHeal;
+        return ans;
     }
 }
