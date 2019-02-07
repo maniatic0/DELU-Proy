@@ -1,6 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
+
+[System.Serializable]
+public class FliptEvent : UnityEvent<bool> {}
 
 [RequireComponent(typeof(HumanoidMovement))]
 [RequireComponent(typeof(SpriteFlip))]
@@ -51,6 +55,13 @@ public class HumanoidMovementAnimation : MonoBehaviour
     private string animatorParamVelZ = "VelZ";
 
 
+    /// <summary>
+    /// Funciones llamadas cuando el sprite se voltea
+    /// </summary>
+    [Tooltip("Funciones llamadas cuando el sprite se voltea")]
+    [SerializeField]
+    public FliptEvent onFlipChange;
+
     void Awake()
     {
         spriteFlip = GetComponent <SpriteFlip> ();
@@ -76,9 +87,11 @@ public class HumanoidMovementAnimation : MonoBehaviour
 		if(velX < 0 && isFacingRight) {
             spriteFlip.FlipX = true;
             isFacingRight = false;
+            onFlipChange.Invoke(isFacingRight);
         } else if(velX > 0 && !isFacingRight) {
             spriteFlip.FlipX = false;
             isFacingRight = true;
+            onFlipChange.Invoke(isFacingRight);
         }
 	}
 
