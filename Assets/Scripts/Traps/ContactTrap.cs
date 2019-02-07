@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using MoreTags;
 
 [RequireComponent(typeof(Collider))]
 public class ContactTrap : MonoBehaviour
@@ -31,6 +32,18 @@ public class ContactTrap : MonoBehaviour
     /// <returns></returns>
     private HashSet<Collider> reloading = new HashSet<Collider>();
 
+    /// <summary>
+    /// Patron de los tags de gameObjecto que seran afectados por la trampa
+    /// </summary>
+    [Tooltip("Patron de los tags de gameObjecto que seran afectados por la trampa")]
+    [SerializeField]
+    private string targetsPattern = "Damageable.*";
+
+    /// <summary>
+    /// Tags relacionados al patron
+    /// </summary>
+    private string[] targetPatternInternal;
+
 
     /// <summary>
     /// Awake is called when the script instance is being loaded.
@@ -39,6 +52,7 @@ public class ContactTrap : MonoBehaviour
     {
         info.effect = damageType;
         info.origin = this.gameObject;
+        targetPatternInternal = TagUtilities.PatternToStrings(targetsPattern);
     }
 
 
@@ -72,7 +86,7 @@ public class ContactTrap : MonoBehaviour
         if (!reloading.Contains(other.collider))
         {
             LifeManager lm = other.gameObject.GetComponent<LifeManager>();
-            if (lm)
+            if (lm && other.gameObject.AnyTags(targetPatternInternal))
             {
                 lm.ApplyChange(info);
                 StartCoroutine(Reload(other.collider));
