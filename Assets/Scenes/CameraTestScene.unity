@@ -112,6 +112,108 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &344590411 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1731065113704288196, guid: 2defe9fd8be189c4b9e89bca786b8c72,
+    type: 3}
+  m_PrefabInstance: {fileID: 1731065114247916696}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &344590412
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 344590411}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00ce3fef1d2cb0245a6686a95b80b1db, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &344590413
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 344590411}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f1cb0c509e78f204da47e935f0593de3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetsPattern: Damageable.*
+  weapon: {fileID: 0}
+  activeMeleeCombat: 1
+--- !u!1 &451505091
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 451505093}
+  - component: {fileID: 451505092}
+  m_Layer: 0
+  m_Name: Tag Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &451505092
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 451505091}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b37b1227e10a2764aba9ad894b14d6ae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_tags:
+  - name: Damageable.Player
+    color: {r: 0, g: 0.04313898, b: 1, a: 1}
+    gameObjects:
+    - {fileID: 344590411}
+  - name: Damageable
+    color: {r: 1, g: 0.60045624, b: 0, a: 1}
+    gameObjects: []
+  - name: Damageable.Enemy
+    color: {r: 1, g: 0, b: 0.05476761, a: 1}
+    gameObjects:
+    - {fileID: 1704196162}
+  - name: Damageable.Object
+    color: {r: 1, g: 0.6, b: 0, a: 1}
+    gameObjects: []
+  - name: Healable
+    color: {r: 0, g: 1, b: 0.035513878, a: 1}
+    gameObjects: []
+  - name: Healable.Player
+    color: {r: 0, g: 0.21154356, b: 1, a: 1}
+    gameObjects:
+    - {fileID: 344590411}
+  - name: Healable.Enemy
+    color: {r: 1, g: 0, b: 0, a: 1}
+    gameObjects:
+    - {fileID: 1704196162}
+--- !u!4 &451505093
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 451505091}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 11
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -326,6 +428,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   reloadTime: 2
   damageType: {fileID: 11400000, guid: ff41a22730e622b44834404299650f03, type: 2}
+  targetsPattern: Healable.*
 --- !u!23 &1217291396
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -432,6 +535,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   reloadTime: 1
   damageType: {fileID: 11400000, guid: 485022f85afc8f24ba3e89da16dbba4f, type: 2}
+  targetsPattern: Damageable.*
 --- !u!23 &1433246102
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -832,6 +936,8 @@ GameObject:
   - component: {fileID: 1704196170}
   - component: {fileID: 1704196172}
   - component: {fileID: 1704196173}
+  - component: {fileID: 1704196174}
+  - component: {fileID: 1704196175}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Untagged
@@ -1010,6 +1116,10 @@ MonoBehaviour:
   animatorParamVelX: VelX
   animatorParamVelY: VelY
   animatorParamVelZ: VelZ
+  onFlipChange:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: FliptEvent, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
 --- !u!95 &1704196173
 Animator:
   serializedVersion: 3
@@ -1029,6 +1139,62 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &1704196174
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1704196162}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e3ec02c51a40168488abf9f039b7e734, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxLife: 10
+  onLifeChange:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1704196174}
+        m_MethodName: DebugLifeChange
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_TypeName: LifetEvent, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+  onLifeChangeHeal:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: LifetEvent, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+  onLifeChangeDamage:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: LifetEvent, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+  onLifeEnd:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: LifetEvent, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+  onLifeReStart:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: LifetEvent, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+--- !u!114 &1704196175
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1704196162}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00ce3fef1d2cb0245a6686a95b80b1db, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1807256365
 GameObject:
   m_ObjectHideFlags: 0
@@ -1188,7 +1354,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 42.6, y: -52.39, z: 0}
 --- !u!1 &2112006343
 GameObject:
@@ -1373,7 +1539,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1731065114247916696
 PrefabInstance:
@@ -1425,7 +1591,7 @@ PrefabInstance:
     - target: {fileID: 1731065113704288199, guid: 2defe9fd8be189c4b9e89bca786b8c72,
         type: 3}
       propertyPath: m_RootOrder
-      value: 5
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 1731065113704288199, guid: 2defe9fd8be189c4b9e89bca786b8c72,
         type: 3}
@@ -1442,5 +1608,21 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 4083643626960034022, guid: 2defe9fd8be189c4b9e89bca786b8c72,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 2.2231
+      objectReference: {fileID: 0}
+    - target: {fileID: 4083643626960034022, guid: 2defe9fd8be189c4b9e89bca786b8c72,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.86415
+      objectReference: {fileID: 0}
+    - target: {fileID: 4083643626960034022, guid: 2defe9fd8be189c4b9e89bca786b8c72,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 2.097165
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 2718349281306202813, guid: 2defe9fd8be189c4b9e89bca786b8c72, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 2defe9fd8be189c4b9e89bca786b8c72, type: 3}
