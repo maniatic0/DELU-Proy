@@ -53,6 +53,7 @@ public class HumanoidMeleeCombatHandler : MonoBehaviour {
     {
         targetPatternInternal = TagUtilities.PatternToStrings(targetsPattern);
         GetComponent<HumanoidMovementAnimation>().onFlipChange.AddListener(OnFlipChange);
+        ChangeWeapon(weapon);
     }
 
     /// <summary>
@@ -101,7 +102,7 @@ public class HumanoidMeleeCombatHandler : MonoBehaviour {
 
         if (weapon)
         {
-            weapon.gameObject.SetActive(false);
+            weapon.gameObject.SetActive(true);
             weapon.SetupWeapon(targetPatternInternal);
         }
     }

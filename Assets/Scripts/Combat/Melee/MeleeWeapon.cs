@@ -86,14 +86,16 @@ public class MeleeWeapon : MonoBehaviour {
     /// </summary>
     /// <param name="other">Objecto con el que se choco</param>
     void HandleContact(Collider other) {
-        if (!activeWeapon)
+        if (activeWeapon)
         {
             LifeManager lm = other.gameObject.GetComponent<LifeManager>();
             if (lm && other.gameObject.AnyTags(targetPatternInternal))
             {
                 lm.ApplyChange(info);
+                //Debug.Log("Hit " + other.gameObject.ToString());
             }
         }
+        
     }
 
     /// <summary>
@@ -101,11 +103,11 @@ public class MeleeWeapon : MonoBehaviour {
     /// </summary>
     /// <returns></returns>
     IEnumerator Reload() {
-        Debug.Log("Reloading");
+        //Debug.Log("Reloading");
         reloading = true;
         yield return new WaitForSeconds(reloadTime);
         reloading = false;
-        Debug.Log("Reloaded");
+        //Debug.Log("Reloaded");
     }
 
     /// <summary>
@@ -114,6 +116,13 @@ public class MeleeWeapon : MonoBehaviour {
     /// <param name="targetTags">Tags de los posibles objetivos</param>
     public void SetupWeapon(string[] targetTags) {
         targetPatternInternal = targetTags;
+        /*
+        Debug.Log("Tags:");
+        foreach (var tag in targetPatternInternal)
+        {
+            Debug.Log(tag);
+        }
+         */
     }
 
     /// <summary>
@@ -128,7 +137,7 @@ public class MeleeWeapon : MonoBehaviour {
         activeWeapon = true;
         col.enabled = true;
         ani.SetTrigger(animatorParamInitAttack);
-        Debug.Log("StartAttack");
+        //Debug.Log("StartAttack");
         StartCoroutine(Reload());
         return true;
     }
@@ -139,7 +148,7 @@ public class MeleeWeapon : MonoBehaviour {
     public void EndAttack() {
         activeWeapon = false;
         col.enabled = false;
-        Debug.Log("EndAttack");
+        //Debug.Log("EndAttack");
     }
 
     /// <summary>
