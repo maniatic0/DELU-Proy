@@ -19,7 +19,7 @@ GameObject:
   - component: {fileID: 1731065113704288253}
   - component: {fileID: 1731065113704288254}
   - component: {fileID: 1731065113704288255}
-  - component: {fileID: 3594687771502563605}
+  - component: {fileID: 4337473584103584859}
   m_Layer: 8
   m_Name: Player
   m_TagString: Player
@@ -160,6 +160,7 @@ MonoBehaviour:
   horizontalAxis: Horizontal
   verticalAxis: Vertical
   jumpButton: Jump
+  attackButton: Attack
 --- !u!136 &1731065113704288252
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -256,7 +257,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
     m_TypeName: LifetEvent, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
---- !u!114 &3594687771502563605
+--- !u!114 &4337473584103584859
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -265,7 +266,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1731065113704288196}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f1cb0c509e78f204da47e935f0593de3, type: 3}
+  m_Script: {fileID: 11500000, guid: 493d45b7ed2d02140ab509e1c3dce057, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   targetsPattern: Damageable.*
@@ -283,7 +284,7 @@ GameObject:
   - component: {fileID: 2727001546062741354}
   - component: {fileID: 4489724153589789026}
   m_Layer: 8
-  m_Name: Test Sword
+  m_Name: Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -377,7 +378,7 @@ GameObject:
   - component: {fileID: 4025545455248937093}
   - component: {fileID: 2359976692852638031}
   m_Layer: 8
-  m_Name: Test Weapons
+  m_Name: Test Weapon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

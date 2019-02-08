@@ -59,11 +59,6 @@ public class MeleeWeapon : MonoBehaviour {
     private Animator ani;
 
     /// <summary>
-    /// Sprites para hacer flip
-    /// </summary>
-    private SpriteFlip[] sp;
-
-    /// <summary>
     /// Awake is called when the script instance is being loaded.
     /// </summary>
     void Awake()
@@ -74,7 +69,6 @@ public class MeleeWeapon : MonoBehaviour {
         col.isTrigger = true;
         col.enabled = false;
         ani = gameObject.GetComponent<Animator>();
-        sp = GetComponentsInChildren<SpriteFlip>();
     }
 
 
@@ -107,9 +101,11 @@ public class MeleeWeapon : MonoBehaviour {
     /// </summary>
     /// <returns></returns>
     IEnumerator Reload() {
+        Debug.Log("Reloading");
         reloading = true;
         yield return new WaitForSeconds(reloadTime);
         reloading = false;
+        Debug.Log("Reloaded");
     }
 
     /// <summary>
@@ -132,6 +128,7 @@ public class MeleeWeapon : MonoBehaviour {
         activeWeapon = true;
         col.enabled = true;
         ani.SetTrigger(animatorParamInitAttack);
+        Debug.Log("StartAttack");
         StartCoroutine(Reload());
         return true;
     }
@@ -142,15 +139,21 @@ public class MeleeWeapon : MonoBehaviour {
     public void EndAttack() {
         activeWeapon = false;
         col.enabled = false;
+        Debug.Log("EndAttack");
     }
 
     /// <summary>
-    /// Gira todos los sprites con un sprite flipper
+    /// Gira 180 grados el contenedor del sprite
     /// </summary>
-    public void Flip() {
-        foreach (SpriteFlip sprite in sp)
+    /// <param name="isFacingRight">Si esta viendo a la derecha</param>
+    public void Flip(bool isFacingRight) {
+        Vector3 currRot = gameObject.transform.rotation.eulerAngles;
+        if (isFacingRight &&  !Mathf.Approximately(Mathf.DeltaAngle(currRot.y, 0.0f), 0.0f))
         {
-            sprite.FlipX = !sprite.FlipX;
+            currRot.y = 0.0f;
+        } else if (!isFacingRight &&  !Mathf.Approximately(Mathf.DeltaAngle(currRot.y, 180.0f), 0.0f)) {
+            currRot.y = 180.0f;
         }
+        gameObject.transform.rotation = Quaternion.Euler(currRot);
     }
 }

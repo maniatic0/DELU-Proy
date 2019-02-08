@@ -101,8 +101,58 @@ public class PlayerInput : MonoBehaviour
     /// Nombre del Input de Salto
     /// </summary>
     [SerializeField]
-    [Tooltip("Nombre del Input Vertical")]
+    [Tooltip("Nombre de Salto")]
     private string jumpButton = "Jump";
+
+
+    /// <summary>
+    /// Boton de Ataque Presionado
+    /// </summary>
+    /// <value></value>
+    public static bool AttackDown
+    {
+        get { return Manager.attackDown; }
+    }
+
+    /// <summary>
+    /// Boton de Ataque Presionandose
+    /// </summary>
+    /// <value></value>
+    public static bool Attack
+    {
+        get { return Manager.attack; }
+    }
+
+    /// <summary>
+    /// Boton de Ataque Liberado
+    /// </summary>
+    /// <value></value>
+    public static bool AttackUp
+    {
+        get { return Manager.attackUp; }
+    }
+
+    /// <summary>
+    /// Boton de Ataque Presionado
+    /// </summary>
+    private bool attackDown = false;
+
+    /// <summary>
+    /// Boton de Ataque Presionandose
+    /// </summary>
+    private bool attack = false;
+
+    /// <summary>
+    /// Boton de Ataque Liberado
+    /// </summary>
+    private bool attackUp = false;
+
+    /// <summary>
+    /// Nombre del Input de Ataque
+    /// </summary>
+    [SerializeField]
+    [Tooltip("Nombre del Input de Ataque")]
+    private string attackButton = "Attack";
 
 
     private void Awake()
@@ -127,6 +177,10 @@ public class PlayerInput : MonoBehaviour
         jumpDown = Input.GetButtonDown(jumpButton);
         jump = Input.GetButton(jumpButton);
         jumpUp = Input.GetButtonUp(jumpButton);
+
+        attackDown = Input.GetButtonDown(attackButton);
+        attack = Input.GetButton(attackButton);
+        attackUp = Input.GetButtonUp(attackButton);
     }
 
 }

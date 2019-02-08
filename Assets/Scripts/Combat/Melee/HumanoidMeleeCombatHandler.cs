@@ -68,7 +68,7 @@ public class HumanoidMeleeCombatHandler : MonoBehaviour {
                 pos.x *= -1.0f;
                 if (weapon)
                 {
-                    weapon.Flip();
+                    weapon.Flip(isFacingRight);
                 }
             }
             weapon.gameObject.transform.localPosition = pos;
@@ -103,6 +103,16 @@ public class HumanoidMeleeCombatHandler : MonoBehaviour {
         {
             weapon.gameObject.SetActive(false);
             weapon.SetupWeapon(targetPatternInternal);
+        }
+    }
+
+    /// <summary>
+    /// Iniciar Ataque
+    /// </summary>
+    protected void StartAttack() {
+        if (activeMeleeCombat)
+        {
+            weapon.StartAttack();    
         }
     }
 }
