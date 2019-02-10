@@ -12,5 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb64c018f5127e24eac5595c6aa7da3c, type: 3}
   m_Name: TestHeal
   m_EditorClassIdentifier: 
+  colorEffect: {fileID: 11400000, guid: 05209f238554f244da304942bd9b2b4d, type: 2}
   applyMoreThanOnce: 0
   basicHeal: 2
