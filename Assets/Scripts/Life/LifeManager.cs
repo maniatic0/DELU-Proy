@@ -6,6 +6,7 @@ using UnityEngine.Events;
 [System.Serializable]
 public class LifetEvent : UnityEvent<LifeManager> {}
 
+[RequireComponent(typeof(LifeColorHandler))]
 public class LifeManager : MonoBehaviour
 {
 
@@ -78,11 +79,18 @@ public class LifeManager : MonoBehaviour
     public LifetEvent onLifeReStart;
 
     /// <summary>
+    /// Manejador de Cambios de Color por Vida
+    /// </summary>
+    private LifeColorHandler lifeColor;
+
+    /// <summary>
     /// Awake is called when the script instance is being loaded.
     /// </summary>
     protected virtual void Awake()
     {
         life = maxLife;
+        lifeColor = GetComponent<LifeColorHandler>();
+        lifeColor.SetupLifeManager(this);
     }
 
     /// <summary>
@@ -90,9 +98,9 @@ public class LifeManager : MonoBehaviour
     /// </summary>
     protected virtual void Update()
     {
-        for (int i = continueApplying.Count; i > 0; i--)
+        for (int i = continueApplying.Count - 1; i > 0; i--)
         {
-            if (!continueApplying[i].effect.ContinueApplyingChange(
+            if (!continueApplying[i].Effect.ContinueApplyingChange(
                 Time.deltaTime, 
                 this, 
                 continueApplying[i])
@@ -101,7 +109,7 @@ public class LifeManager : MonoBehaviour
             }
             else
             {
-                ChangeLife(continueApplying[i].effect.ApplyChange(this, continueApplying[i]));
+                ChangeLife(continueApplying[i].Effect.ApplyChange(this, continueApplying[i]));
             }
         }
     }
@@ -111,12 +119,12 @@ public class LifeManager : MonoBehaviour
     /// </summary>
     /// <param name="effect">Cambio a Aplicar</param>
     public virtual void ApplyChange(EffectInfo effectInfo) {
-        if (effectInfo.effect.ApplyMoreThanOnce)
+        if (effectInfo.Effect.ApplyMoreThanOnce)
         {
             continueApplying.Add(effectInfo);
         }
         else {
-            ChangeLife(effectInfo.effect.ApplyChange(this, effectInfo));
+            ChangeLife(effectInfo.Effect.ApplyChange(this, effectInfo));
         }
     }
 
@@ -125,6 +133,11 @@ public class LifeManager : MonoBehaviour
     /// </summary>
     /// <param name="change">Cambio a aplicar</param>
     protected void ChangeLife(EffectOutput effectChange) {
+
+        if (effectChange.colorEffect)
+        {
+            lifeColor.ApplyChange(effectChange);
+        }
 
         if (Mathf.Approximately(effectChange.lifeChange, 0.0f))
         {

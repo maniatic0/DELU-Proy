@@ -63,8 +63,7 @@ public class MeleeWeapon : MonoBehaviour {
     /// </summary>
     void Awake()
     {
-        info.effect = damageType;
-        info.origin = this.gameObject;
+        info = new EffectInfo(damageType, this.gameObject);
         col = gameObject.GetComponent<Collider>();
         col.isTrigger = true;
         col.enabled = false;
@@ -91,7 +90,7 @@ public class MeleeWeapon : MonoBehaviour {
             LifeManager lm = other.gameObject.GetComponent<LifeManager>();
             if (lm && other.gameObject.AnyTags(targetPatternInternal))
             {
-                lm.ApplyChange(info);
+                lm.ApplyChange(info.StartTimeCount());
                 //Debug.Log("Hit " + other.gameObject.ToString());
             }
         }

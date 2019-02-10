@@ -4,6 +4,20 @@ using System.Collections;
 public class EffectType : ScriptableObject {
 
     /// <summary>
+    /// Efecto de color siendo aplicado
+    /// </summary>
+    [Tooltip("Efecto de color siendo aplicado")]
+    [SerializeField]    
+    private ColorEffect colorEffect;
+
+    // <summary>
+    /// Efecto de color siendo aplicado
+    /// </summary>
+    public ColorEffect AppliedColorEffect{ 
+        get{return colorEffect;}
+    }
+
+    /// <summary>
     /// Si el cambio se aplica más de una vez
     /// </summary>
     [Tooltip("Si el cambio se aplica más de una vez")]
@@ -32,9 +46,10 @@ public class EffectType : ScriptableObject {
     /// <returns>Cambio a aplicar</returns>
     public virtual EffectOutput ApplyChange(LifeManager mg, EffectInfo info) {
 
-        EffectOutput ans;
+        EffectOutput ans = new EffectOutput(info);
 
         ans.lifeChange = 0;
+        ans.colorEffect = AppliedColorEffect;
 
         return ans;
     }

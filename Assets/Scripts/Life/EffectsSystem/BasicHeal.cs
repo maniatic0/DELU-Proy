@@ -19,8 +19,9 @@ public class BasicHeal : EffectType {
     /// <param name="info">Info del generador de la curacion</param>
     /// <returns>Curacion a aplicar</returns>
     public override EffectOutput ApplyChange(LifeManager mg, EffectInfo info) {
-        EffectOutput ans;
+        EffectOutput ans = new EffectOutput(info);
         ans.lifeChange = basicHeal;
+        ans.colorEffect = AppliedColorEffect;
         return ans;
     }
 }

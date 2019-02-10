@@ -50,8 +50,7 @@ public class ContactTrap : MonoBehaviour
     /// </summary>
     void Awake()
     {
-        info.effect = damageType;
-        info.origin = this.gameObject;
+        info = new EffectInfo(damageType , this.gameObject);
         targetPatternInternal = TagUtilities.PatternToStrings(targetsPattern);
     }
 
@@ -88,7 +87,7 @@ public class ContactTrap : MonoBehaviour
             LifeManager lm = other.gameObject.GetComponent<LifeManager>();
             if (lm && other.gameObject.AnyTags(targetPatternInternal))
             {
-                lm.ApplyChange(info);
+                lm.ApplyChange(info.StartTimeCount());
                 StartCoroutine(Reload(other.collider));
             }
         }

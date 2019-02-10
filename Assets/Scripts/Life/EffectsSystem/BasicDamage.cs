@@ -21,8 +21,9 @@ public class BasicDamage : EffectType {
     /// <returns>Daño a aplicar</returns>
     public override EffectOutput ApplyChange(LifeManager mg, EffectInfo info) {
 
-        EffectOutput ans;
+        EffectOutput ans = new EffectOutput(info);
         ans.lifeChange = -basicDamage;
+        ans.colorEffect = AppliedColorEffect;
         return ans;
     }
 }

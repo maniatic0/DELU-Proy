@@ -20,6 +20,9 @@ GameObject:
   - component: {fileID: 1731065113704288254}
   - component: {fileID: 1731065113704288255}
   - component: {fileID: 4337473584103584859}
+  - component: {fileID: 128862653776566747}
+  - component: {fileID: 344590412}
+  - component: {fileID: 344590413}
   m_Layer: 8
   m_Name: Player
   m_TagString: Player
@@ -272,6 +275,45 @@ MonoBehaviour:
   targetsPattern: Damageable.*
   weapon: {fileID: 2359976692852638031}
   activeMeleeCombat: 1
+--- !u!114 &128862653776566747
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1731065113704288196}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef62295fb4d4c974bbde0c9f5d288c61, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &344590412
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1731065113704288196}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00ce3fef1d2cb0245a6686a95b80b1db, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &344590413
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1731065113704288196}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f1cb0c509e78f204da47e935f0593de3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetsPattern: Damageable.*
+  weapon: {fileID: 0}
+  activeMeleeCombat: 1
 --- !u!1 &4933740150940009110
 GameObject:
   m_ObjectHideFlags: 0
@@ -393,7 +435,7 @@ Transform:
   m_GameObject: {fileID: 9197100215796956202}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 1.13, y: 0, z: 0}
-  m_LocalScale: {x: 2.2231, y: 0.86415, z: 2.0971649}
+  m_LocalScale: {x: 2.2231, y: 0.86415, z: 2.097165}
   m_Children:
   - {fileID: 5043125742384276455}
   m_Father: {fileID: 1731065113704288199}
