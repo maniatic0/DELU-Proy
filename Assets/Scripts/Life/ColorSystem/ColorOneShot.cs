@@ -17,6 +17,6 @@ public class ColorOneShot : ColorEffect {
     /// <param name="info">Info del del cambio</param>
     /// <returns>Si se Continua Aplicando Color</returns>
     public override bool ContinueAplying(float deltaTime, LifeManager lm, EffectOutput info) {
-        return Time.time - info.EffectInfo.StartTime <= applyingTime;
+        return info.EffectInfo.GetElapsedTime() <= applyingTime;
     }
 }

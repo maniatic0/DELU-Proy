@@ -24,7 +24,17 @@ public class EffectType : ScriptableObject {
     [SerializeField]
     protected bool applyMoreThanOnce = false;
 
+    /// <summary>
+    /// Si el cambio se aplica más de una vez
+    /// </summary>
     public bool ApplyMoreThanOnce {get{return applyMoreThanOnce;}}
+
+    /// <summary>
+    /// Tiempo en el que se aplica el efecto del color
+    /// </summary>
+    [Tooltip("Tiempo en el que se aplica el efecto del color")]
+    [SerializeField]
+    protected float applyingTime = 0f;
 
     /// <summary>
     /// Si se continua aplicando el cambio 
@@ -34,7 +44,7 @@ public class EffectType : ScriptableObject {
     /// <param name="info">Info del generador del cambio</param>
     /// <returns>Si se continua aplicando el cambio</returns>
     public virtual bool ContinueApplyingChange(float delta, LifeManager mg, EffectInfo info) {
-        return false;
+        return  info.GetElapsedTime() <= applyingTime;
     }
 
     

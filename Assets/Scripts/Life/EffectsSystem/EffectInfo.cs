@@ -20,6 +20,16 @@ public class EffectInfo
     /// </summary>
     public float StartTime {get; private set;} = -1f;
 
+    /// <summary>
+    /// Acumulador de tiempo
+    /// </summary>
+    public float AccumulatedTime {get; set;} = 0f;
+
+    /// <summary>
+    /// Si ya fue iniciado el efecto
+    /// </summary>
+    public bool Started {get; set;} = false;
+
     private EffectInfo() {}
 
     /// <summary>
@@ -59,5 +69,14 @@ public class EffectInfo
     /// <returns>Nuevo EffectInfo</returns>
     public EffectInfo StartTimeCount() {
         return new EffectInfo(this, Time.time);
+    }
+
+
+    /// <summary>
+    /// Obtener el tiempo pasado desde el inicio del efecto
+    /// </summary>
+    /// <returns>Tiempo pasado desde el inicio del efecto</returns>
+    public float GetElapsedTime() {
+        return Time.time - StartTime;
     }
 }
