@@ -89,6 +89,11 @@ public class HumanoidDeathManager : MonoBehaviour {
             Debug.LogWarning("Death Manager got a different Life Manager", this);
         }
 
+        if (Dead)
+        {
+            return;
+        }
+
         Dead = true;
 
         if (movement)
