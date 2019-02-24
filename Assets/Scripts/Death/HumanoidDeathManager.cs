@@ -135,14 +135,4 @@ public class HumanoidDeathManager : MonoBehaviour {
 
         life.Revive();
     }
-
-    /// <summary>
-    /// Update is called every frame, if the MonoBehaviour is enabled.
-    /// </summary>
-    void Update()
-    {
-        if (Dead && Input.anyKey) {
-            StartRevive();
-        }
-    }
 }
