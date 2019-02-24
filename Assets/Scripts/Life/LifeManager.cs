@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Events;
 
 [System.Serializable]
-public class LifetEvent : UnityEvent<LifeManager> {}
+public class LifeEvent : UnityEvent<LifeManager> {}
 
 [RequireComponent(typeof(LifeColorHandler))]
 public class LifeManager : MonoBehaviour
@@ -52,31 +52,31 @@ public class LifeManager : MonoBehaviour
     /// Funciones para llamar cuando la cantidad de vida cambia
     /// </summary>
     [Tooltip("Funciones para llamar cuando la cantidad de vida cambia")]
-    public LifetEvent onLifeChange;
+    public LifeEvent onLifeChange;
 
     /// <summary>
     /// Funciones para llamar cuando la cantidad de vida cambia de forma positiva
     /// </summary>
     [Tooltip("Funciones para llamar cuando la cantidad de vida cambia de forma positiva")]
-    public LifetEvent onLifeChangeHeal;
+    public LifeEvent onLifeChangeHeal;
 
     /// <summary>
     /// Funciones para llamar cuando la cantidad de vida cambia de forma negativa
     /// </summary>
     [Tooltip("Funciones para llamar cuando la cantidad de vida cambia de forma negativa")]
-    public LifetEvent onLifeChangeDamage;
+    public LifeEvent onLifeChangeDamage;
 
     /// <summary>
     /// Funciones para llamar cuando muere el humanoide
     /// </summary>
     [Tooltip("Funciones para llamar cuando muere el humanoide")]
-    public LifetEvent onLifeEnd;
+    public LifeEvent onLifeEnd;
 
     /// <summary>
     /// Funciones para llamar cuando revive el humanoide
     /// </summary>
     [Tooltip("Funciones para llamar cuando revive el humanoide")]
-    public LifetEvent onLifeReStart;
+    public LifeEvent onLifeReStart;
 
     /// <summary>
     /// Manejador de Cambios de Color por Vida
