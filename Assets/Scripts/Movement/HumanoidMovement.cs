@@ -35,6 +35,28 @@ public class HumanoidMovement : MonoBehaviour
     /// </summary>
     public Vector3 Velocity { get { return vel; } }
 
+    /// <summary>
+    /// Si el movimiento esta activo
+    /// </summary>
+    [Tooltip("Si el movimiento esta activo")]
+    [SerializeField]
+    private bool activeMovement = true;
+
+    /// <summary>
+    /// Si el movimiento esta activo
+    /// </summary>
+    /// <value></value>
+    public bool ActiveMovement {
+        get{return activeMovement;}
+        set{
+            if (!value && activeMovement)
+            {
+                Stop();
+            }
+            activeMovement = value;
+        }
+    }
+
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
@@ -66,7 +88,10 @@ public class HumanoidMovement : MonoBehaviour
 
     void FixedUpdate()
     {
-        Move();
+        if (ActiveMovement)
+        {
+            Move();
+        }
     }
 
     /// <summary>
@@ -84,4 +109,10 @@ public class HumanoidMovement : MonoBehaviour
         rb.velocity = vel;
     }
 
+    /// <summary>
+    /// Poner la Velocidad en cero
+    /// </summary>
+    public virtual void Stop() {
+        rb.velocity = Vector3.zero;
+    }
 }
