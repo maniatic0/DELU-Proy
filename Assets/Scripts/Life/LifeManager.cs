@@ -156,6 +156,8 @@ public class LifeManager : MonoBehaviour
         if (death)
         {
             life = 0;
+            continueApplying.Clear();
+            lifeColor.StopAll();
         }
              
         onLifeChange.Invoke(this);

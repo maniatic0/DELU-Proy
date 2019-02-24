@@ -35,6 +35,19 @@ public class HumanoidDeathManager : MonoBehaviour {
     [SerializeField]
     private string deathAnimatorTrigger = "Death";
 
+    /// <summary>
+    /// Nombre del Trigger de revivir en el Animator
+    /// </summary>
+    [Tooltip("Nombre del Trigger de revivir en el Animator")]
+    [SerializeField]
+    private string reviveAnimatorTrigger = "Revive";
+
+    /// <summary>
+    /// Si el humanoide esta vivo o muerto
+    /// </summary>
+    /// <value></value>
+    public bool Dead {get; private set;} = false;
+
 
     /// <summary>
     /// Awake is called when the script instance is being loaded.
@@ -76,6 +89,8 @@ public class HumanoidDeathManager : MonoBehaviour {
             Debug.LogWarning("Death Manager got a different Life Manager", this);
         }
 
+        Dead = true;
+
         if (movement)
         {
             movement.ActiveMovement = false;
@@ -87,5 +102,47 @@ public class HumanoidDeathManager : MonoBehaviour {
         }
 
         ani.SetTrigger(deathAnimatorTrigger);
+    }
+
+    /// <summary>
+    /// Iniciar proceso de revivir
+    /// </summary>
+    public virtual void StartRevive() {
+        Dead = false;
+
+        ani.SetTrigger(reviveAnimatorTrigger);
+    }
+
+    /// <summary>
+    /// Completar el proceso de revivir, require haber llamado a StartRevive primero
+    /// </summary>
+    public virtual void CompleteRevive() {
+        if (Dead)
+        {
+            StartRevive();
+            return;
+        }
+
+        if (movement)
+        {
+            movement.ActiveMovement = true;
+        }
+
+        if (meleeManager)
+        {
+            meleeManager.ActiveMeleeCombat = true;
+        }
+
+        life.Revive();
+    }
+
+    /// <summary>
+    /// Update is called every frame, if the MonoBehaviour is enabled.
+    /// </summary>
+    void Update()
+    {
+        if (Dead && Input.anyKey) {
+            StartRevive();
+        }
     }
 }

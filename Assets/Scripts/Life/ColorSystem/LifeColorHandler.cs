@@ -97,4 +97,11 @@ public class LifeColorHandler : MonoBehaviour
     public virtual void ApplyChange(EffectOutput effectInfo) {
         continueApplying.Add(effectInfo);
     }
+
+    /// <summary>
+    /// Detener todos los efectos de colores
+    /// </summary>
+    public virtual void StopAll() {
+        continueApplying.Clear();
+    }
 }
