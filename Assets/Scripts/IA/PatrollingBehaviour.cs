@@ -11,9 +11,13 @@ public class PatrollingBehaviour : StateMachineBehaviour
     private int randomSpot;
 
     private Vector3 enemyVelocity;
+
+    private Transform playerPos;
+
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
+        playerPos = GameObject.FindGameObjectWithTag("Player").transform;
         patrol = GameObject.FindGameObjectWithTag("PatrolSpots").GetComponent<PatrolSpots>();
         agent = animator.GetComponent<Agent>();
         randomSpot = Random.Range(0, patrol.moveSpots.Length);
@@ -34,8 +38,26 @@ public class PatrollingBehaviour : StateMachineBehaviour
             randomSpot = Random.Range(0, patrol.moveSpots.Length);
         }
 
-        if(Input.GetKeyDown(KeyCode.Space)) {
-            animator.SetBool("IsPatrolling", false);
+        //Vector3 dirPrueba = playerPos.position - animator.transform.position;
+        //float pos = dirPrueba.magnitude;
+
+        //Debug.Log("Player Pos: " + playerPos.position);
+        //Debug.Log("Enemy Pos: " + animator.transform.position);
+        //Debug.Log("A mano: " + pos);
+        //Debug.Log("Funcion: " + Vector3.Distance(animator.transform.position, playerPos.position));
+        if(Vector3.Distance(animator.transform.position, playerPos.position) < 5f) {
+            
+            int randomMove = Random.Range(0, 2);
+
+            switch(randomMove) {
+                case 0:
+                    animator.SetBool("IsFollowing", true);
+                    animator.SetBool("IsPatrolling", false);
+                    break;
+                case 1:
+                    animator.SetTrigger("FastJump");
+                    break;
+            }
         }
     }
 

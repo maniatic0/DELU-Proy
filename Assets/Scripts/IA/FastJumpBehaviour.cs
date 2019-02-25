@@ -2,15 +2,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(Agent))]
-public class SeekBehaviour : StateMachineBehaviour
-{   
-    private Transform playerPos;
+public class FastJumpBehaviour : StateMachineBehaviour
+{
     private Agent agent;
 
     private Vector3 enemyVelocity;
-    
 
+    private Transform playerPos;
+
+    private float jumpVelocity = 50f;
+    
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
@@ -23,18 +24,15 @@ public class SeekBehaviour : StateMachineBehaviour
     {
         if(agent != null) {
             enemyVelocity = playerPos.position - animator.transform.position;
-		    enemyVelocity.Normalize();
-		    enemyVelocity *= agent.MaxSpeed;
+            enemyVelocity.Normalize();
+            enemyVelocity *= jumpVelocity;
 
             agent.UpdateAgent(enemyVelocity);
         }
-
-        if(Vector3.Distance(animator.transform.position, playerPos.position) > 3f) {
-            animator.SetBool("IsFollowing", false);
-        } else if(Vector3.Distance(animator.transform.position, playerPos.position) < 1f) {
+        
+        if(Vector3.Distance(animator.transform.position, playerPos.position) < 3f) {
             animator.SetBool("Attacking", true);
         }
-
     }
 
     // OnStateExit is called when a transition ends and the state machine finishes evaluating this state
