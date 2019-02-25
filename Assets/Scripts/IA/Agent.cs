@@ -32,36 +32,39 @@ public class Agent : HumanoidMovement {
     /// Funcion para actualizar la informacion del agente.
     /// </summary>
     /// <param name="nSteering">Clase Steering que tiene la informacion pasada por los Behaviours.</param>
-	public void UpdateAgent(Steering nSteering) {
+    /// Por ahora estoy cambiando el sistema de IA para no hacer uso del Steering, pero ya veremos
+	public void UpdateAgent(Vector3 nVelocity) {
 		
 		/// Verificacion si el agente es Kinematico o no, dependiendo de ello hace displacement la velocidad que se le pasa o la que se guarda.
-		if (nSteering.isKinematic == true) {
-			displacement = nSteering.linear;
-		} else {
-			displacement = mVelocity * Time.deltaTime;
-		}
+		//if (nSteering.isKinematic == true) {
+		//	displacement = nSteering.linear;
+		//} else {
+		//	displacement = mVelocity * Time.deltaTime;
+		//}
+        displacement = nVelocity;
+
 		SetVelocity(displacement);
 
         /// <summary>
         /// Actualizar la velocidad interna del agente.
         /// </summary>
-		mVelocity += nSteering.linear * Time.deltaTime;
+		mVelocity += nVelocity * Time.deltaTime;
 
         /// <summary>
         /// Si el agente no es kinematico entonces se capea la velocidad a la maxima velocidad que tenemos.
         /// </summary>
-		if (nSteering.isKinematic == false) {
-			if(mVelocity.magnitude > MaxSpeed) {
-				mVelocity.Normalize();
-				mVelocity *= maxSpeed;
-			}
-		}
+		//if (nSteering.isKinematic == false) {
+		//	if(mVelocity.magnitude > MaxSpeed) {
+		//		mVelocity.Normalize();
+		//		mVelocity *= maxSpeed;
+		//	}
+        //}
 
         /// <summary>
         /// Si la velocidad que se le pasa es cero, se coloca que sea cero.
         /// </summary>
         /// <value></value>
-		if(nSteering.linear.Equals(Vector3.zero)) {
+		if(nVelocity.Equals(Vector3.zero)) {
 			mVelocity = Vector3.zero;
 		}
 	}

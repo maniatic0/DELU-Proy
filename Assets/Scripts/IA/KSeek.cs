@@ -12,6 +12,6 @@ public class KSeek : Behaviours {
 	}
 
 	void Update() {
-		agent.UpdateAgent(GetSteering());
+		//agent.UpdateAgent(GetSteering());
 	}
 }
