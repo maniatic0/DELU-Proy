@@ -1,0 +1,41 @@
+
+{
+	"Diags_Nodes":
+	[
+		{
+			"dialog_text" : "How are you?",
+			"Neighboors" : [1,2,3],
+			"question" : true
+		},
+		{
+			"dialog_text" : "Fine",
+			"Neighboors" : [4],
+			"question" : false
+		},
+		{
+			"dialog_text" : "Horrible.",
+			"Neighboors" : [5],
+			"question" : false
+		},
+		{
+			"dialog_text" : "...",
+			"Neighboors" : [6],
+			"question" : false
+		},
+		{
+			"dialog_text" : "That's great!",
+			"Neighboors" : [-1],
+			"question" : false
+		},
+		{
+			"dialog_text" : "What's the problem?",
+			"Neighboors" : [-1],
+			"question" : false
+		},
+		{
+			"dialog_text" : "Don't be that quiet! I'll ask you again",
+			"Neighboors" : [0],
+			"question" : false
+		}
+	]
+}
