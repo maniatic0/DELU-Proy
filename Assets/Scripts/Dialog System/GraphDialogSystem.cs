@@ -21,7 +21,10 @@ public class GraphDialogSystem : MonoBehaviour
     NodeList nodeList = new NodeList();
     GraphDialog dialogsGraph = new GraphDialog();
 
-    public Text boxText;
+    public GameObject diagBox;
+    public Text mainText;
+    public Text questionText;
+    public Text[] answers = new Text[4];
     public float typeSpeed = 0.1f;
 
     bool writing = false;
@@ -32,10 +35,15 @@ public class GraphDialogSystem : MonoBehaviour
     int questionSelec = 0;
     List<int> actualQuestions;
 
+    void Awake()
+    {
+        //Desactivando la UI al iniciar hasta que haya un dialogo
+        DisableUI();
+    }
     // Start is called before the first frame update
     void Start()
     {
-        ReadFile("Dialogs/graph_test");
+        ReadFile("Dialogs/test2");
         CreateGraph(nodeList.Diags_Nodes, dialogsGraph);
         StartDiag();
     }
@@ -51,7 +59,7 @@ public class GraphDialogSystem : MonoBehaviour
         }
 
         //Input para adelantar la escritura de texto
-        if (!readyNext && writing && Input.GetKeyDown(key: KeyCode.Return))
+        if (!readyNext && writing && Input.GetKeyDown(key: KeyCode.Space))
         {
             allText = true;
             writing = false;
@@ -59,8 +67,9 @@ public class GraphDialogSystem : MonoBehaviour
         }
 
         //Bloque para alternar entes las opciones de diálogo y elegir una opción
-        if (choosing && Input.GetKeyDown(KeyCode.UpArrow))
+        if (choosing && Input.GetKeyDown(KeyCode.DownArrow))
         {
+            answers[questionSelec].gameObject.transform.Find("QuestionChoicer").gameObject.SetActive(false);
             //Mover la flechita
             if (questionSelec < actualQuestions.Count - 1)
             {
@@ -70,11 +79,13 @@ public class GraphDialogSystem : MonoBehaviour
             {
                 questionSelec = 0;
             }
+            answers[questionSelec].gameObject.transform.Find("QuestionChoicer").gameObject.SetActive(true);
             print(questionSelec);
         }
-        else if (choosing && Input.GetKeyDown(key: KeyCode.DownArrow))
+        else if (choosing && Input.GetKeyDown(key: KeyCode.UpArrow))
         {
-         //Mover la flechita   
+            answers[questionSelec].gameObject.transform.Find("QuestionChoicer").gameObject.SetActive(false);
+            //Mover la flechita   
             if (questionSelec > 0)
             {
                 questionSelec -= 1;
@@ -83,6 +94,7 @@ public class GraphDialogSystem : MonoBehaviour
             {
                 questionSelec = actualQuestions.Count - 1;
             }
+            answers[questionSelec].gameObject.transform.Find("QuestionChoicer").gameObject.SetActive(true);
             print(questionSelec);
         }
         else if (choosing && Input.GetKeyDown(key: KeyCode.Return))
@@ -97,6 +109,16 @@ public class GraphDialogSystem : MonoBehaviour
     /// </summary>
     public void StartDiag()
     {
+        //Activando todo lo que tenga que ver con la UI
+        diagBox.SetActive(true);
+        mainText.enabled = true;
+        questionText.enabled = true;
+        foreach (Text text in answers)
+        {
+            text.gameObject.transform.Find("QuestionChoicer").gameObject.SetActive(false);
+            text.text = "";
+            text.enabled = true;
+        }
         NextDiag(0);
         //Hacer aca que se active la cajita de texto.
     }
@@ -115,13 +137,13 @@ public class GraphDialogSystem : MonoBehaviour
             nextDiag = dialogsGraph._nodes[node].Neighboors[0];
             foreach (char letter in dialogsGraph._nodes[node].dialog_text)
             {
-                boxText.text += letter;
+                mainText.text += letter;
                 
                 //Detecta si se quiere saltar directamente al diálogo
                 //y lo muestra todo de una
                 if (allText)
                 {
-                    boxText.text = dialogsGraph._nodes[node].dialog_text;
+                    mainText.text = dialogsGraph._nodes[node].dialog_text;
                     break;
                 }
 
@@ -146,7 +168,14 @@ public class GraphDialogSystem : MonoBehaviour
     /// <param name="node">Nodo al que se accederá a continuación</param>
     public void NextDiag(int node)
     {
-        boxText.text = "";
+        mainText.text = "";
+        questionText.text = "";
+        foreach (Text text in answers)
+        {
+            text.gameObject.transform.Find("QuestionChoicer").gameObject.SetActive(false);
+            text.text = "";
+        }
+
         readyNext = false;
         choosing = false;
         allText = false;
@@ -158,6 +187,7 @@ public class GraphDialogSystem : MonoBehaviour
         else
         {
             StopAllCoroutines();
+            DisableUI();
         }
     }
 
@@ -174,26 +204,27 @@ public class GraphDialogSystem : MonoBehaviour
         actualQuestions = FetchAnswerNodes(neighbours);
         foreach (char letter in dialogsGraph._nodes[actualNode].dialog_text)
         {
-            boxText.text += letter;
+            questionText.text += letter;
             if (allText)
             {
-                boxText.text = dialogsGraph._nodes[actualNode].dialog_text;
+                questionText.text = dialogsGraph._nodes[actualNode].dialog_text;
                 break;
             }
             yield return new WaitForSeconds(typeSpeed);
         }
         writing = false;
 
-        boxText.text += "\n";
+        int counter = 0;
         foreach (int neigh in neighbours)
         {
             foreach (char letter in dialogsGraph._nodes[neigh].dialog_text)
             {
-                boxText.text += letter;
+               answers[counter].text += letter;
                 yield return new WaitForSeconds(typeSpeed);
             }
-            boxText.text += "\n";
+            counter += 1;
         }
+        answers[0].gameObject.transform.Find("QuestionChoicer").gameObject.SetActive(true);
         choosing = true;
         //Hacer que salga una flechita para seleccionar una opcion
     }
@@ -242,4 +273,16 @@ public class GraphDialogSystem : MonoBehaviour
         }
     }
     //Debería hacer una función para resetear el grafo
+
+    public void DisableUI()
+    {
+        diagBox.SetActive(false);
+        mainText.enabled = false;
+        questionText.enabled = false;
+        foreach (Text text in answers)
+        {
+            text.gameObject.transform.Find("QuestionChoicer").gameObject.SetActive(false);
+            text.enabled = false;
+        }
+    }
 }
