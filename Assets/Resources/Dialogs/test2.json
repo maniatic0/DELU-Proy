@@ -4,37 +4,44 @@
 		{
 			"dialog_text" : "How are you?",
 			"Neighboors" : [1],
-			"question" : false
+			"question" : false,
+			"isPlayer" : false
 		},
 		{
 			"dialog_text" : "Fine",
 			"Neighboors" : [2],
-			"question" : false
+			"question" : false,
+			"isPlayer" : true
 		},
 		{
 			"dialog_text" : "Horrible.",
 			"Neighboors" : [3],
-			"question" : false
+			"question" : false,
+			"isPlayer" : false
 		},
 		{
 			"dialog_text" : "...",
 			"Neighboors" : [4],
-			"question" : false
+			"question" : false,
+			"isPlayer" : true
 		},
 		{
 			"dialog_text" : "That's great!",
 			"Neighboors" : [5],
-			"question" : false
+			"question" : false,
+			"isPlayer" : true
 		},
 		{
 			"dialog_text" : "What's the problem?",
 			"Neighboors" : [6],
-			"question" : false
+			"question" : false,
+			"isPlayer" : false
 		},
 		{
 			"dialog_text" : "Don't be that quiet! I'll ask you again",
 			"Neighboors" : [-1],
-			"question" : false
+			"question" : false,
+			"isPlayer" : true
 		}
 	]
 }

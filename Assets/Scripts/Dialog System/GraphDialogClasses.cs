@@ -13,6 +13,7 @@ public class DialogNodes
     public string dialog_text;
     public List<int> Neighboors;
     public bool question;
+    public bool isPlayer;
 }
 
 

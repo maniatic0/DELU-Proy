@@ -23,8 +23,13 @@ public class GraphDialogSystem : MonoBehaviour
 
     public GameObject diagBox;
     public Text mainText;
+    public Text playerText;
+    public Text npcText;
     public Text questionText;
     public Text[] answers = new Text[4];
+    public Image playerImage;
+    public Image npcImage;
+
     public float typeSpeed = 0.1f;
 
     bool writing = false;
@@ -43,7 +48,8 @@ public class GraphDialogSystem : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        ReadFile("Dialogs/test2");
+        //ReadFile("Dialogs/test2");
+        ReadFile("Dialogs/graph_test");
         CreateGraph(nodeList.Diags_Nodes, dialogsGraph);
         StartDiag();
     }
@@ -51,6 +57,7 @@ public class GraphDialogSystem : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
         //Input para pasar al siguiente diálogo
         if (readyNext && Input.GetKeyDown(key: KeyCode.Return))
         {
@@ -129,25 +136,53 @@ public class GraphDialogSystem : MonoBehaviour
     /// </summary>
     /// <param name="node">Nodo del cual se obtendrá información del diálogo</param>
     /// <returns>Solo una corutina</returns>
+    /// 
+
+    //IMPORTANTE!
+    //Un monton de codigo duplicado, me dio flojera arreglarlo pero hacer una funcion
     IEnumerator Type(int node)
     {
         if (!dialogsGraph._nodes[node].question)
         {
-            writing = true;
-            nextDiag = dialogsGraph._nodes[node].Neighboors[0];
-            foreach (char letter in dialogsGraph._nodes[node].dialog_text)
+            if (dialogsGraph._nodes[node].isPlayer)
             {
-                mainText.text += letter;
-                
-                //Detecta si se quiere saltar directamente al diálogo
-                //y lo muestra todo de una
-                if (allText)
+                ActivatePlayerText();
+                writing = true;
+                nextDiag = dialogsGraph._nodes[node].Neighboors[0];
+                foreach (char letter in dialogsGraph._nodes[node].dialog_text)
                 {
-                    mainText.text = dialogsGraph._nodes[node].dialog_text;
-                    break;
-                }
+                    playerText.text += letter;
 
-                yield return new WaitForSeconds(typeSpeed);
+                    //Detecta si se quiere saltar directamente al diálogo
+                    //y lo muestra todo de una
+                    if (allText)
+                    {
+                        playerText.text = dialogsGraph._nodes[node].dialog_text;
+                        break;
+                    }
+
+                    yield return new WaitForSeconds(typeSpeed);
+                }
+            }
+            else
+            {
+                ActivateNPCText();
+                writing = true;
+                nextDiag = dialogsGraph._nodes[node].Neighboors[0];
+                foreach (char letter in dialogsGraph._nodes[node].dialog_text)
+                {
+                    npcText.text += letter;
+
+                    //Detecta si se quiere saltar directamente al diálogo
+                    //y lo muestra todo de una
+                    if (allText)
+                    {
+                        npcText.text = dialogsGraph._nodes[node].dialog_text;
+                        break;
+                    }
+
+                    yield return new WaitForSeconds(typeSpeed);
+                }
             }
             writing = false;
             allText = false;
@@ -161,6 +196,7 @@ public class GraphDialogSystem : MonoBehaviour
         
     }
 
+
     /// <summary>
     /// Función encargada de preparar la UI, variables para
     /// el siguiente diálogo y de la salida de una conversación.
@@ -168,7 +204,8 @@ public class GraphDialogSystem : MonoBehaviour
     /// <param name="node">Nodo al que se accederá a continuación</param>
     public void NextDiag(int node)
     {
-        mainText.text = "";
+        DeactivatePlayerText();
+        DeactivateNPCText();
         questionText.text = "";
         foreach (Text text in answers)
         {
@@ -202,6 +239,7 @@ public class GraphDialogSystem : MonoBehaviour
     {
         writing = true;
         actualQuestions = FetchAnswerNodes(neighbours);
+        playerImage.enabled = true;
         foreach (char letter in dialogsGraph._nodes[actualNode].dialog_text)
         {
             questionText.text += letter;
@@ -276,13 +314,47 @@ public class GraphDialogSystem : MonoBehaviour
 
     public void DisableUI()
     {
+        //Desactivando cajita de diálogo y texto
         diagBox.SetActive(false);
-        mainText.enabled = false;
+        playerText.enabled = false;
+        npcText.enabled = false;
         questionText.enabled = false;
+
+        //Desactivando retratos
+        playerImage.enabled = false;
+        npcImage.enabled = false;
+        
+        //Desactivando bichito para seleccionar pregunta y cada pregunta
         foreach (Text text in answers)
         {
             text.gameObject.transform.Find("QuestionChoicer").gameObject.SetActive(false);
             text.enabled = false;
         }
+    }
+
+    public void ActivatePlayerText()
+    {
+        playerText.enabled = true;
+        playerImage.enabled = true;
+    }
+
+    public void DeactivatePlayerText()
+    {
+        playerText.text = "";
+        playerText.enabled = false;
+        playerImage.enabled = false;
+    }
+
+    public void ActivateNPCText()
+    {
+        npcText.enabled = true;
+        npcImage.enabled = true;
+    }
+
+    public void DeactivateNPCText()
+    {
+        npcText.text = "";
+        npcText.enabled = false;
+        npcImage.enabled = false;
     }
 }
