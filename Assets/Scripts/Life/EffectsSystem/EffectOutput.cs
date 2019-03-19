@@ -16,11 +16,28 @@ public class EffectOutput
     public float lifeChange = 0;
 
     /// <summary>
+    /// Modificador del cambio en la vida
+    /// </summary>
+    public float modifier = 0;
+
+    /// <summary>
+    /// Obtener el cambio de vida sin modificador
+    /// </summary>
+    /// <value></value>
+    public float LifeChangeRaw { get{return lifeChange;}}
+
+    /// <summary>
+    /// Obtener el cambio de vida con modificador
+    /// </summary>
+    /// <value></value>
+    public float LifeChangeModified { get{return LifeChangeRaw * modifier;}}
+
+    /// <summary>
     /// Efecto de color siendo aplicado
     /// </summary>
     public ColorEffect colorEffect = null;
 
-    private EffectOutput() {}
+    //private EffectOutput() {}
 
     /// <summary>
     /// Crea un EffectOutput con la info de quien lo creo

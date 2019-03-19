@@ -14,6 +14,13 @@ public class ContactTrap : MonoBehaviour
     private float reloadTime = 0.2f;
 
     /// <summary>
+    /// Modificador de daño de arma
+    /// </summary>
+    [Tooltip("Modificador de daño de arma")]
+    [SerializeField]
+    private float modifier = 1f;
+
+    /// <summary>
     /// Daño a aplicar
     /// </summary>
     [Tooltip("Daño a aplicar")]
@@ -50,7 +57,7 @@ public class ContactTrap : MonoBehaviour
     /// </summary>
     void Awake()
     {
-        info = new EffectInfo(damageType , this.gameObject);
+        info = new EffectInfo(damageType , this.gameObject, modifier);
         targetPatternInternal = TagUtilities.PatternToStrings(targetsPattern);
     }
 

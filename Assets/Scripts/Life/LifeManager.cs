@@ -109,7 +109,7 @@ public class LifeManager : MonoBehaviour
             }
             else
             {
-                ChangeLife(continueApplying[i].Effect.ApplyChange(this, continueApplying[i]));
+                ChangeLife(continueApplying[i].ApplyChange(this));
             }
         }
     }
@@ -124,7 +124,7 @@ public class LifeManager : MonoBehaviour
             continueApplying.Add(effectInfo);
         }
         else {
-            ChangeLife(effectInfo.Effect.ApplyChange(this, effectInfo));
+            ChangeLife(effectInfo.ApplyChange(this));
         }
     }
 
@@ -139,12 +139,12 @@ public class LifeManager : MonoBehaviour
             lifeColor.ApplyChange(effectChange);
         }
 
-        if (Mathf.Approximately(effectChange.lifeChange, 0.0f))
+        if (Mathf.Approximately(effectChange.LifeChangeRaw, 0.0f))
         {
             return;
         }
 
-        life += effectChange.lifeChange;
+        life += effectChange.LifeChangeModified;
 
         if (life > maxLife)
         {
