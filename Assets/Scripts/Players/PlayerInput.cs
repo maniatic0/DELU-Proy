@@ -154,6 +154,26 @@ public class PlayerInput : MonoBehaviour
     [Tooltip("Nombre del Input de Ataque")]
     private string attackButton = "Attack";
 
+    /// <summary>
+    /// Float del Input de Cambio de armas
+    /// </summary>
+    public static float ChangeWeapon
+    {
+        get { return Manager.changeWeapon; }
+    }
+
+    /// <summary>
+    /// Nombre del Input de Cabmio de armas
+    /// </summary>
+    [SerializeField]
+    [Tooltip("Nombre del Input de Cambio de armas")]
+    private string changeButton = "Mouse ScrollWheel";
+
+    /// <summary>
+    /// Float del Input de Cambio de armas
+    /// </summary>
+    private float changeWeapon = 0f;
+
 
     private void Awake()
     {
@@ -181,6 +201,8 @@ public class PlayerInput : MonoBehaviour
         attackDown = Input.GetButtonDown(attackButton);
         attack = Input.GetButton(attackButton);
         attackUp = Input.GetButtonUp(attackButton);
+
+        changeWeapon = Input.GetAxis(changeButton);
     }
 
 }

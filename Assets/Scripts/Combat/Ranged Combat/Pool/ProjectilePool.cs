@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerProjectilePool : MonoBehaviour
+public class ProjectilePool : MonoBehaviour
 {
     //Si alguien quiere saber que esto, digame y lo explico :PS (Pedro)
     [SerializeField]

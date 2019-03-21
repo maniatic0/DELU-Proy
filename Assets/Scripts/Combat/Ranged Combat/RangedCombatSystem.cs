@@ -2,22 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(PlayerProjectilePool))]
+[RequireComponent(typeof(ProjectilePool))]
 //[RequireComponent(typeof(RangedWeapon))]
-public class AimControllerClick : MonoBehaviour
+public class RangedCombatSystem : MonoBehaviour
 {
     //IDEAS//
     //-En algun script/clase/alguna estructura de datos del jugador, se puede hacer una lista
     // de los efectos que tiene el jugador. Hacer un efecto que afecte el fireRate
 
-    /// <summary>
-    /// Timer para comparar con el CD
-    /// </summary>
-    private float shootTimer;
-    /// <summary>
-    /// Float para indicar en que tiempo se presiono el boton de disparo
-    /// </summary>
-    private float pressTime;
     /// <summary>
     /// Cooldown del disparo
     /// </summary>
@@ -25,13 +17,28 @@ public class AimControllerClick : MonoBehaviour
     /// <summary>
     /// Indica si ya paso el tiempo del cooldown
     /// </summary>
-    private bool readyToShoot = false;
-
+    private bool readyToShoot = true;
+    /// <summary>
+    /// Indica si ya paso el tiempo del cooldown
+    /// </summary>
+    public bool ReadyToShoot
+    {
+        get {return readyToShoot;}
+    }
+    
     /// <summary>
     /// Arma equipada
     /// </summary>
     [SerializeField]
     private RangedWeapon equippedWeapon;
+    /// <summary>
+    /// Arma equipada
+    /// </summary>
+    public RangedWeapon EquippedWeapon
+    {
+        get {return equippedWeapon;}
+        set {ChangeWeapon(value);}
+    }
     /// <summary>
     /// De donde sale el disparo
     /// </summary>
@@ -41,58 +48,49 @@ public class AimControllerClick : MonoBehaviour
     /// GameObject del VFX del arma
     /// </summary>
     public GameObject rangedWeapon;
+
+
     /// <summary>
     /// Pool de proyectiles
     /// </summary>
-    private PlayerProjectilePool pool;
+    private ProjectilePool pool;
     /// <summary>
     /// Camara del juego
     /// </summary>
     private Camera cam;
 
-    //Inputs
-    private KeyCode shoot = KeyCode.Mouse0; 
-
     private void Awake()
     {
         cam = Camera.main;
-        pool = GetComponent<PlayerProjectilePool>();
+        pool = GetComponent<ProjectilePool>();
     }
 
-    private void Start()
+    public void Start()
     {
         coolDown = equippedWeapon.fireRate;
-        shootTimer = coolDown;
     }
 
-    // Update is called once per frame
     /// <summary>
-    /// En Update se va a recibir el input para el disparo. 
-    /// Se determina si un disparo esta cargado.
+    /// Funcion encargada de recargar el arma
     /// </summary>
-    private void Update()
+    /// <returns></returns>
+    IEnumerator ReloadBow()
     {
-        shootTimer += (shootTimer < coolDown) ? Time.deltaTime : 0;
-        if (Input.GetKeyDown(shoot) && shootTimer >= coolDown)
-        {
-            pressTime = Time.time;
-            readyToShoot = true;
-        }
-        if (Input.GetKeyUp(shoot) && readyToShoot)
-        {
-            if (Time.time - pressTime >= equippedWeapon.chargeTime)
-            {
-                Debug.Log("Cargado!");
-                ShootRay(damageBuff: equippedWeapon.chargeBonus);
-            }
-            else
-            {
-                Debug.Log("No cargado");
-                ShootRay();
-            }
-            readyToShoot = false;
-            shootTimer = 0;
-        }
+        Debug.Log("Reloading...");
+        readyToShoot = false;
+        yield return new WaitForSeconds(coolDown);
+        readyToShoot = true;
+        Debug.Log("Reloaded!");
+    }
+
+    /// <summary>
+    /// Funcion para cambiar el arma equipada
+    /// </summary>
+    /// <param name="newWeapon">Arma a equipar</param>
+    public void ChangeWeapon(RangedWeapon newWeapon)
+    {
+        equippedWeapon = newWeapon;
+        coolDown = equippedWeapon.fireRate;
     }
 
     /// <summary>
@@ -132,8 +130,18 @@ public class AimControllerClick : MonoBehaviour
                 //Debug.Log("Nothing Hit");
                 DebugRay(direction, false);
             }
-            
+            StartCoroutine(ReloadBow());;
         }
+    }
+
+    public void ShootTarget(Transform target, float damageBuff = 1f)
+    {
+        GameObject projectile = pool.GetFromPool();
+        SimpleProjectile projectileControl = projectile.GetComponent<SimpleProjectile>();
+        projectileControl.InitializeProjectile(weapon: equippedWeapon, spawner: shotSpawn);
+        projectile.SetActive(true);
+        projectileControl.ShootAtTarget(target, damageBuff);
+        DebugRay(target.position - transform.position, true);
     }
 
     public void UpdateWeaponSprite()
@@ -157,4 +165,5 @@ public class AimControllerClick : MonoBehaviour
         //Sino, salir disparado en la direccion del click y ya hasta que algo pase y destruya el objeto
         Debug.DrawRay(transform.position, new Vector3(direction.x, direction.y, direction.z), Color.black, 5f);
     }
+
 }

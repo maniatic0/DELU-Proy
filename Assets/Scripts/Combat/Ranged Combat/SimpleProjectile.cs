@@ -49,7 +49,7 @@ public class SimpleProjectile : MonoBehaviour
     /// </summary>
     public float damage;
     /// <summary>
-    /// 
+    /// Bufo de dano del proyectil
     /// </summary>
     private float damageBuff = 1f;
 
@@ -75,8 +75,7 @@ public class SimpleProjectile : MonoBehaviour
     /// <param name="weapon">Arma de rango originaria del dano</param>
     /// <param name="spawner">De donde sale el proyectil</param>
     public void InitializeProjectile(RangedWeapon weapon, Transform spawner)
-    {
-        
+    {     
         if(weapon.projectileSprite != VFX_SR.sprite)
         {
             UpdateSprite(weapon.projectileSprite);
