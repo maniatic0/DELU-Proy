@@ -9,15 +9,13 @@ public class PlayerRangedHandler : RangedCombatSystem
     /// </summary>
     private float pressTime;
 
-    public RangedWeapon altWeaponTest;
-
     void Update()
     {
-        if (PlayerInput.AttackDown && ReadyToShoot)
+        if (PlayerInput.AttackDown && ReadyToShoot && ActiveRanged)
         {
             pressTime = Time.time;
         }
-        if (PlayerInput.AttackUp && ReadyToShoot)
+        if (PlayerInput.AttackUp && ReadyToShoot && ActiveRanged)
         {
             if (Time.time - pressTime >= EquippedWeapon.chargeTime)
             {

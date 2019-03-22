@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 959c1366ee91a1b4598c50125aefa5b9, type: 3}
   m_Name: YUCACOLOR
   m_EditorClassIdentifier: 
-  colorToApply: {r: 1, g: 1, b: 1, a: 1}
-  applyingTime: 0.3
+  colorToApply: {r: 0.9433962, g: 0.06731966, b: 0, a: 1}
+  applyingTime: 0.2

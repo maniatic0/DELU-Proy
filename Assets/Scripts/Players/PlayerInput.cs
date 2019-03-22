@@ -163,7 +163,7 @@ public class PlayerInput : MonoBehaviour
     }
 
     /// <summary>
-    /// Nombre del Input de Cabmio de armas
+    /// Nombre del Input de Cambio de armas
     /// </summary>
     [SerializeField]
     [Tooltip("Nombre del Input de Cambio de armas")]
@@ -173,6 +173,26 @@ public class PlayerInput : MonoBehaviour
     /// Float del Input de Cambio de armas
     /// </summary>
     private float changeWeapon = 0f;
+
+    /// <summary>
+    /// Nombre del Input para cambiar entre estilos de combate
+    /// </summary>
+    [SerializeField]
+    [Tooltip("Nombre del Input de Tipo de Combate")]
+    private string combatTypeButton = "Combat Switch";
+
+    /// <summary>
+    /// Bool del Input para cambiar entre estilos de combate
+    /// </summary>
+    private bool combatType = false;
+
+    /// <summary>
+    /// Bool del Input para cambiar entre estilos de combate
+    /// </summary>
+    public static bool CombatType
+    {
+        get { return Manager.combatType;  }
+    }
 
 
     private void Awake()
@@ -203,6 +223,7 @@ public class PlayerInput : MonoBehaviour
         attackUp = Input.GetButtonUp(attackButton);
 
         changeWeapon = Input.GetAxis(changeButton);
+        combatType = Input.GetButtonDown(combatTypeButton);
     }
 
 }

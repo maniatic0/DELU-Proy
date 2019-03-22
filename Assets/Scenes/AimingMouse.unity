@@ -232,6 +232,7 @@ MonoBehaviour:
   verticalAxis: Vertical
   jumpButton: Jump
   attackButton: Attack
+  changeButton: Mouse ScrollWheel
 --- !u!65 &141822977
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -335,6 +336,7 @@ MonoBehaviour:
   equippedWeapon: {fileID: 11400000, guid: 392505684f8864e43a4a517913b2f225, type: 2}
   shotSpawn: {fileID: 141822980}
   rangedWeapon: {fileID: 141822975}
+  altWeaponTest: {fileID: 11400000, guid: 6e36ea954da730646ba51d464e4e0586, type: 2}
 --- !u!1 &220492791
 GameObject:
   m_ObjectHideFlags: 0
@@ -347,7 +349,6 @@ GameObject:
   - component: {fileID: 220492797}
   - component: {fileID: 220492796}
   - component: {fileID: 220492795}
-  - component: {fileID: 220492794}
   - component: {fileID: 220492793}
   - component: {fileID: 220492792}
   m_Layer: 0
@@ -366,13 +367,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 220492791}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 665fafa365201c247a14d2b7415dfb19, type: 3}
+  m_Script: {fileID: 11500000, guid: 36d687bb1964fb146befd0cd5c5a5923, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  horizontalAxis: Horizontal
-  verticalAxis: Vertical
-  jumpButton: Jump
-  attackButton: Attack
+  equippedWeapon: {fileID: 11400000, guid: 6e36ea954da730646ba51d464e4e0586, type: 2}
+  shotSpawn: {fileID: 220492798}
+  rangedWeapon: {fileID: 220492791}
 --- !u!114 &220492793
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -389,21 +389,6 @@ MonoBehaviour:
   isGrowable: 1
   projectileBase: {fileID: 4944514899270116615, guid: 9c6445a1325c5fa409475470995b849a,
     type: 3}
---- !u!114 &220492794
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 220492791}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: daf2c7d2338a9e04e942f1b5fdf2cf3c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  equippedWeapon: {fileID: 11400000, guid: 392505684f8864e43a4a517913b2f225, type: 2}
-  shotSpawn: {fileID: 220492798}
-  rangedWeapon: {fileID: 220492791}
 --- !u!65 &220492795
 BoxCollider:
   m_ObjectHideFlags: 0

@@ -47,8 +47,22 @@ public class RangedCombatSystem : MonoBehaviour
     /// <summary>
     /// GameObject del VFX del arma
     /// </summary>
-    public GameObject rangedWeapon;
+    public GameObject rangedWeaponObj;
 
+    /// <summary>
+    /// Indica si el sistema de combate de rango esta activo
+    /// </summary>
+    [SerializeField]
+    private bool activeRanged = false;
+
+    /// <summary>
+    /// Indica si el sistema de combate de rango esta activo
+    /// </summary>
+    public bool ActiveRanged
+    {
+        get { return activeRanged; }
+        set { activeRanged = value; }
+    }
 
     /// <summary>
     /// Pool de proyectiles
@@ -65,9 +79,24 @@ public class RangedCombatSystem : MonoBehaviour
         pool = GetComponent<ProjectilePool>();
     }
 
-    public void Start()
+    //Deberia empezar con un parametro de arma?
+    /// <summary>
+    /// Funcion que activa todo lo necesario para usar el sistema de combate por rango
+    /// </summary>
+    public void EnableRangedCombat()
     {
-        coolDown = equippedWeapon.fireRate;
+        activeRanged = true;
+        UpdateWeaponSprite();
+        rangedWeaponObj.SetActive(true);
+    }
+
+    /// <summary>
+    /// Funcion que desactiva el sistema de combate por rango
+    /// </summary>
+    public void DisabeRangedCombat()
+    {
+        activeRanged = false;
+        rangedWeaponObj.SetActive(false);
     }
 
     /// <summary>
@@ -76,11 +105,11 @@ public class RangedCombatSystem : MonoBehaviour
     /// <returns></returns>
     IEnumerator ReloadBow()
     {
-        Debug.Log("Reloading...");
+        //Debug.Log("Reloading...");
         readyToShoot = false;
         yield return new WaitForSeconds(coolDown);
         readyToShoot = true;
-        Debug.Log("Reloaded!");
+        //Debug.Log("Reloaded!");
     }
 
     /// <summary>
@@ -108,7 +137,7 @@ public class RangedCombatSystem : MonoBehaviour
         if (Physics.Raycast(ray, out hit))
         {
             //Direccion del disparo. Chequear porque puse la coordenada Y como 0
-            Vector3 direction = new Vector3(hit.point.x, 0, hit.point.z) - rangedWeapon.transform.position;
+            Vector3 direction = new Vector3(hit.point.x, 0, hit.point.z) - rangedWeaponObj.transform.position;
             //Se obtiene el GameObject del proyectil, desde la pool y luego se inicializa
             GameObject projectile = pool.GetFromPool();
             SimpleProjectile projectileControl = projectile.GetComponent<SimpleProjectile>();
@@ -134,6 +163,11 @@ public class RangedCombatSystem : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Esta funcion dispara a un objetivo sin posibilidad de fallar (para IA)
+    /// </summary>
+    /// <param name="target">Objetivo a disparar</param>
+    /// <param name="damageBuff">Bufo de dano</param>
     public void ShootTarget(Transform target, float damageBuff = 1f)
     {
         GameObject projectile = pool.GetFromPool();
@@ -165,5 +199,4 @@ public class RangedCombatSystem : MonoBehaviour
         //Sino, salir disparado en la direccion del click y ya hasta que algo pase y destruya el objeto
         Debug.DrawRay(transform.position, new Vector3(direction.x, direction.y, direction.z), Color.black, 5f);
     }
-
 }
