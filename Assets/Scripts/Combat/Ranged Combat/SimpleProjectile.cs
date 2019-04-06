@@ -35,6 +35,10 @@ public class SimpleProjectile : MonoBehaviour
     /// </summary>
     [SerializeField]
     private Transform shotSpawn;
+    /// <summary>
+    /// GameObject del player/AI que esta disparando
+    /// </summary>
+    private GameObject shooter;
 
     /// <summary>
     /// Tipo de dano del proyectil
@@ -67,14 +71,15 @@ public class SimpleProjectile : MonoBehaviour
     {
         VFX_SR.sprite = spr;
     }
-    
+
     /// <summary>
     /// Funcion para verificar si hay algun dato del proyectil que cambiar.
     /// El efecto es notable cuando hay un cambio de arma.
     /// </summary>
     /// <param name="weapon">Arma de rango originaria del dano</param>
     /// <param name="spawner">De donde sale el proyectil</param>
-    public void InitializeProjectile(RangedWeapon weapon, Transform spawner)
+    /// <param name="originObject">Quien dispara el proyectil</param>
+    public void InitializeProjectile(RangedWeapon weapon, Transform spawner, GameObject originObject)
     {     
         if(weapon.projectileSprite != VFX_SR.sprite)
         {
@@ -95,6 +100,7 @@ public class SimpleProjectile : MonoBehaviour
         {
             damage = weapon.damage;
         }
+        shooter = originObject;
         info = new EffectInfo(damageType, gameObject);
     }
 
@@ -103,11 +109,25 @@ public class SimpleProjectile : MonoBehaviour
     /// </summary>
     public void ChangeRotation()
     {
+        bool flipped = shooter.GetComponent<SpriteFlip>().FlipX;
         //Producto cruz loco que calcula el angulo
-        float angle = Vector3.Angle(Vector3.right, new Vector3(direction.x, 0, direction.z));
-        Vector3 cross = Vector3.Cross(Vector3.right, new Vector3(direction.x, 0, direction.z));
-        angle *= (cross.y < 0) ? -1 : 1;
-        VFX.transform.Rotate(Vector3.up * angle);
+        //float angle = Vector3.Angle(Vector3.right, new Vector3(direction.x, 0, direction.z));
+        //Vector3 cross = Vector3.Cross(Vector3.right, new Vector3(direction.x, 0, direction.z));
+        //angle *= (cross.y < 0) ? -1 : 1;
+        //VFX.transform.Rotate(Vector3.up * angle);
+
+        Vector2 upVector = Vector2.Perpendicular(new Vector2(direction.x, direction.y));
+        Vector3 forwardVector;
+        if (!flipped)
+        {
+            forwardVector = Vector3.Cross(direction, Vector3.up);
+        }
+        else
+        {
+            forwardVector = Vector3.Cross(direction, Vector3.down);
+        }
+        Quaternion desiredRotation = Quaternion.LookRotation(forwardVector,upVector);
+        transform.rotation = desiredRotation;
     }
 
 
@@ -144,7 +164,7 @@ public class SimpleProjectile : MonoBehaviour
         transform.position = shotSpawn.position;
         ChangeRotation();
         //En el tiempo se debe de poner cuanto tiempo durara la flecha en el escenario.
-        Invoke("ProjectileDestroy", 1f);
+        //Invoke("ProjectileDestroy", 1f);
     }
 
     /// <summary>

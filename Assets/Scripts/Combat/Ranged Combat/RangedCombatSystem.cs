@@ -141,7 +141,7 @@ public class RangedCombatSystem : MonoBehaviour
             //Se obtiene el GameObject del proyectil, desde la pool y luego se inicializa
             GameObject projectile = pool.GetFromPool();
             SimpleProjectile projectileControl = projectile.GetComponent<SimpleProjectile>();
-            projectileControl.InitializeProjectile(weapon: equippedWeapon, spawner: shotSpawn);
+            projectileControl.InitializeProjectile(weapon: equippedWeapon, spawner: shotSpawn, originObject: gameObject);
             projectile.SetActive(true);
             //El Finish es el tag que vaya a tener las cosas apuntables
             //Preguntar que tag se va a usar y como usar el sistema multi tag
@@ -172,7 +172,7 @@ public class RangedCombatSystem : MonoBehaviour
     {
         GameObject projectile = pool.GetFromPool();
         SimpleProjectile projectileControl = projectile.GetComponent<SimpleProjectile>();
-        projectileControl.InitializeProjectile(weapon: equippedWeapon, spawner: shotSpawn);
+        projectileControl.InitializeProjectile(weapon: equippedWeapon, spawner: shotSpawn, originObject: gameObject);
         projectile.SetActive(true);
         projectileControl.ShootAtTarget(target, damageBuff);
         DebugRay(target.position - transform.position, true);

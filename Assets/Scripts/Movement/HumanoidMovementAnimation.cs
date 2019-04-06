@@ -11,22 +11,35 @@ public class FliptEvent : UnityEvent<bool> {}
 [RequireComponent(typeof(Animator))]
 public class HumanoidMovementAnimation : MonoBehaviour
 {
-
+    public SpriteFlip SpriteFlip
+    {
+        get { return spriteFlip; }
+    }
     /// <summary>
     /// Componente para hacer flip de humanoide
     /// </summary>
-	private SpriteFlip spriteFlip;
+	protected SpriteFlip spriteFlip;
+
+    public HumanoidMovement HumanoidMovement
+    {
+        get { return humanoidMovement; }
+    }
 
     /// <summary>
     /// Componente de manejo de movimiento
     /// </summary>
-    private HumanoidMovement humanoidMovement;
+    protected HumanoidMovement humanoidMovement;
 
+    public bool IsFacingRight
+    {
+        get { return isFacingRight; }
+        set { isFacingRight = value; }
+    }
     /// <summary>
     /// Si el humanoide esta viendo a la derecha
     /// Se usa para no hacer flip si esta viendo a la izquiera con cero velocidad
     /// </summary>
-	private bool isFacingRight = true;
+	protected bool isFacingRight = true;
 
     /// <summary>
     /// Animator del Humanoide
@@ -82,7 +95,7 @@ public class HumanoidMovementAnimation : MonoBehaviour
     /// <summary>
     /// Voltea el sprite del humanoide a la direccion del movimiento
     /// </summary>
-	void Flip() {
+    protected virtual void Flip() {
         float velX = humanoidMovement.Velocity.x;
 		if(velX < 0 && isFacingRight) {
             spriteFlip.FlipX = true;

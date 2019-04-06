@@ -56,6 +56,19 @@ public class PlayerInput : MonoBehaviour
     private string verticalAxis = "Vertical";
 
     /// <summary>
+    /// Posicion del mouse en la pantalla
+    /// </summary>
+    public static Vector3 MousePosition
+    {
+        get { return Manager._mousePosition; }
+    }
+
+    /// <summary>
+    /// Posicion del mouse en la pantalla
+    /// </summary>
+    private Vector3 _mousePosition;
+
+    /// <summary>
     /// Boton de Salto Presionado
     /// </summary>
     /// <value></value>
@@ -203,6 +216,9 @@ public class PlayerInput : MonoBehaviour
             Destroy(this);
         }
         Manager = this;
+
+        //Input.mousePosition no se puede llamar en la declaracion, asi que lo pongo aca como valor "default"
+        _mousePosition = Input.mousePosition;
     }
 
     private void Update()
@@ -213,6 +229,8 @@ public class PlayerInput : MonoBehaviour
 
         _axisRaw.y = Input.GetAxisRaw(verticalAxis);
         _axis.y = Input.GetAxis(verticalAxis);
+
+        _mousePosition = Input.mousePosition;
 
         jumpDown = Input.GetButtonDown(jumpButton);
         jump = Input.GetButton(jumpButton);
