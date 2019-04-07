@@ -21,13 +21,12 @@ public class CombatSystemHandler : MonoBehaviour
     private bool inChange = false;
     /// <summary>
     /// Bool que indica si se esta en el modo melee
-    /// </summary>
-    
+    /// </summary>    
     private bool inMelee;
+
     /// <summary>
     /// Bool que indica si se esta en el modo de rango
-    /// </summary>
-    
+    /// </summary>   
     private bool inRange;
 
     /// <summary>
@@ -137,7 +136,7 @@ public class CombatSystemHandler : MonoBehaviour
     }
 
     /// <summary>
-    /// Funcio para navegar el inventario de armas hacia atras
+    /// Funcion para navegar el inventario de armas hacia atras
     /// </summary>
     public void ChangeWeaponBackward()
     {

@@ -2,32 +2,70 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(PlayerRangedHandler))]
 public class PlayerMovementAnimation : HumanoidMovementAnimation
 {
-    //revisar el if/if else, falta alguna cond
-     protected override void Flip()
+    /// <summary>
+    /// Script de combate de rango del jugador
+    /// </summary>
+    private PlayerRangedHandler rangedHandler;
+
+    void Awake()
     {
-        Debug.Log(AtRight(PlayerInput.MousePosition));
+        spriteFlip = GetComponent<SpriteFlip>();
+        humanoidMovement = GetComponent<HumanoidMovement>();
+        ani = GetComponent<Animator>();
+        rangedHandler = GetComponent<PlayerRangedHandler>();
+    }
+
+    /// <summary>
+    /// Voltea el sprite del jugador respecto al movimiento (en modo melee)
+    /// Voltea el sprite del jugador respecto al mouse (en modo rango)
+    /// </summary>
+    protected override void Flip()
+    {
         float velX = humanoidMovement.Velocity.x;
-        if ( (velX < 0 && isFacingRight) || !AtRight(PlayerInput.MousePosition))
+        if (!rangedHandler.ActiveRanged)
         {
-            spriteFlip.FlipX = true;
-            isFacingRight = false;
-            onFlipChange.Invoke(isFacingRight);
+            if (velX < 0 && isFacingRight)
+            {
+                spriteFlip.FlipX = true;
+                isFacingRight = false;
+                onFlipChange.Invoke(isFacingRight);
+            }
+            else if (velX > 0 && !isFacingRight)
+            {
+                spriteFlip.FlipX = false;
+                isFacingRight = true;
+                onFlipChange.Invoke(isFacingRight);
+            }
         }
-        else if ( (velX > 0 && !isFacingRight) || AtRight(PlayerInput.MousePosition))
+        else
         {
-            spriteFlip.FlipX = false;
-            isFacingRight = true;
-            onFlipChange.Invoke(isFacingRight);
+            if (!AtRight(PlayerInput.MousePosition))
+            {
+                spriteFlip.FlipX = true;
+                isFacingRight = false;
+                onFlipChange.Invoke(isFacingRight);
+            }
+            else
+            {
+                spriteFlip.FlipX = false;
+                isFacingRight = true;
+                onFlipChange.Invoke(isFacingRight);
+            }
         }
     }
 
-    bool AtRight(Vector3 pos)
+    /// <summary>
+    /// Devuelve un bool que indica si el mouse esta a la derecha del jugador
+    /// </summary>
+    /// <param name="mPos">Posicion del mouse</param>
+    /// <returns>Si el mouse se encuentra a la derecha</returns>
+    bool AtRight(Vector3 mPos)
     {
-        Vector2 worldPos = (Camera.main).ScreenToWorldPoint(pos + Vector3.forward*10);
-        Debug.Log(PlayerInput.MousePosition);
-        Debug.Log("Player x: " + transform.position.x + " Mouse X: " + worldPos.x);
+        mPos.z = -(Camera.main).transform.position.z;
+        Vector2 worldPos = (Camera.main).ScreenToWorldPoint(mPos);
         if (transform.position.x < worldPos.x)
         {
             return true;

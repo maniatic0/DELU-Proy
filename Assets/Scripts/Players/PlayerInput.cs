@@ -117,7 +117,6 @@ public class PlayerInput : MonoBehaviour
     [Tooltip("Nombre de Salto")]
     private string jumpButton = "Jump";
 
-
     /// <summary>
     /// Boton de Ataque Presionado
     /// </summary>

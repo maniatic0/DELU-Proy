@@ -210,7 +210,6 @@ GameObject:
   - component: {fileID: 496891036}
   - component: {fileID: 496891035}
   - component: {fileID: 496891034}
-  - component: {fileID: 496891033}
   - component: {fileID: 496891042}
   - component: {fileID: 496891032}
   - component: {fileID: 496891031}
@@ -222,6 +221,7 @@ GameObject:
   - component: {fileID: 496891025}
   - component: {fileID: 496891024}
   - component: {fileID: 496891023}
+  - component: {fileID: 496891033}
   m_Layer: 8
   m_Name: Player (2)
   m_TagString: Player
