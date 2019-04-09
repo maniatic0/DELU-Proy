@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using MoreTags;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -9,6 +10,12 @@ public class RangedCombatSystem : MonoBehaviour
     //IDEAS//
     //-En algun script/clase/alguna estructura de datos del jugador, se puede hacer una lista
     // de los efectos que tiene el jugador. Hacer un efecto que afecte el fireRate
+
+    /// <summary>
+    /// Patron de los tags de GameObjects danables
+    /// </summary>
+    [SerializeField]
+    private string targetsPattern = "Damageable.*";
 
     /// <summary>
     /// Cooldown del disparo
@@ -47,7 +54,8 @@ public class RangedCombatSystem : MonoBehaviour
     /// <summary>
     /// GameObject del VFX del arma
     /// </summary>
-    public GameObject rangedWeaponObj;
+    [SerializeField]
+    private GameObject rangedWeaponObj;
 
     /// <summary>
     /// Indica si el sistema de combate de rango esta activo
@@ -72,6 +80,8 @@ public class RangedCombatSystem : MonoBehaviour
     /// Camara del juego
     /// </summary>
     private Camera cam;
+
+    public Transform dummy;
 
     private void Awake()
     {
@@ -126,7 +136,7 @@ public class RangedCombatSystem : MonoBehaviour
     /// Funcion encargada de disparar un raycast y detectar si se dio al enemigo.
     /// Despues de esto, se dispara el proyectil.
     /// </summary>
-    public void ShootRay(float damageBuff = 1f)
+    protected void ShootRay(float damageBuff = 1f)
     {
         //Raycast de la camara al mouse
         Ray ray = cam.ScreenPointToRay(Input.mousePosition);
@@ -140,13 +150,12 @@ public class RangedCombatSystem : MonoBehaviour
             Vector3 direction = new Vector3(hit.point.x, 0, hit.point.z) - rangedWeaponObj.transform.position;
             //Se obtiene el GameObject del proyectil, desde la pool y luego se inicializa
             GameObject projectile = pool.GetFromPool();
+            //SimpleProjectile projectileControl = projectile.GetComponent<SimpleProjectile>();
             SimpleProjectile projectileControl = projectile.GetComponent<SimpleProjectile>();
             projectileControl.InitializeProjectile(weapon: equippedWeapon, spawner: shotSpawn, originObject: gameObject);
             projectile.SetActive(true);
-            //El Finish es el tag que vaya a tener las cosas apuntables
-            //Preguntar que tag se va a usar y como usar el sistema multi tag
             //En caso de que se le haya dado a algo apuntable
-            if (hit.collider.CompareTag("Finish"))
+            if (hit.collider.gameObject.AnyTags(TagUtilities.PatternToStrings(targetsPattern)))
             {
                 projectileControl.ShootAtTarget(hit.transform, damageBuff);
                 //Debug.Log("Target Hit");
@@ -159,7 +168,7 @@ public class RangedCombatSystem : MonoBehaviour
                 //Debug.Log("Nothing Hit");
                 DebugRay(direction, false);
             }
-            StartCoroutine(ReloadBow());;
+            StartCoroutine(ReloadBow());
         }
     }
 
@@ -171,10 +180,12 @@ public class RangedCombatSystem : MonoBehaviour
     public void ShootTarget(Transform target, float damageBuff = 1f)
     {
         GameObject projectile = pool.GetFromPool();
+        //SimpleProjectile projectileControl = projectile.GetComponent<SimpleProjectile>();
         SimpleProjectile projectileControl = projectile.GetComponent<SimpleProjectile>();
         projectileControl.InitializeProjectile(weapon: equippedWeapon, spawner: shotSpawn, originObject: gameObject);
         projectile.SetActive(true);
         projectileControl.ShootAtTarget(target, damageBuff);
+        StartCoroutine(ReloadBow());
         DebugRay(target.position - transform.position, true);
     }
 
@@ -198,5 +209,10 @@ public class RangedCombatSystem : MonoBehaviour
         }
         //Sino, salir disparado en la direccion del click y ya hasta que algo pase y destruya el objeto
         Debug.DrawRay(transform.position, new Vector3(direction.x, direction.y, direction.z), Color.black, 5f);
+    }
+
+    protected void DebugShoot(Transform target)
+    {
+        ShootTarget(target);
     }
 }

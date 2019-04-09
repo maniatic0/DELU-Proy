@@ -18,27 +18,85 @@ using UnityEngine.UI;
 //En NextDiag(node), si el nodo es -1, se debe volver a recuperar el control del personaje.
 public class GraphDialogSystem : MonoBehaviour
 {
-    NodeList nodeList = new NodeList();
-    GraphDialog dialogsGraph = new GraphDialog();
+    private NodeList nodeList = new NodeList();
+    private GraphDialog dialogsGraph = new GraphDialog();
+    
+    //Todos estos son objetos pertenecientes a un canvas/objetos de UI
+    /// <summary>
+    /// Caja de dialogo
+    /// </summary>
+    [SerializeField]    
+    private GameObject diagBox;
+    /// <summary>
+    /// Texto principal (no se usa ?)
+    /// </summary>
+    [SerializeField]    
+    private Text mainText;
+    /// <summary>
+    /// Texto del jugador
+    /// </summary>
+    [SerializeField]    
+    private Text playerText;
+    /// <summary>
+    /// Texto de los npc
+    /// </summary>
+    [SerializeField]    
+    private Text npcText;
+    /// <summary>
+    /// Texto de la pregunta
+    /// </summary>
+    [SerializeField]    
+    private Text questionText;
+    /// <summary>
+    /// Textos de las respuestas a una pregunta
+    /// </summary>
+    [SerializeField]    
+    private Text[] answers = new Text[4];
+    /// <summary>
+    /// Portrait del jugador
+    /// </summary>
+    [SerializeField]    
+    private Image playerImage;
+    /// <summary>
+    /// Portrait del npc
+    /// </summary>
+    [SerializeField]
+    private Image npcImage;
 
-    public GameObject diagBox;
-    public Text mainText;
-    public Text playerText;
-    public Text npcText;
-    public Text questionText;
-    public Text[] answers = new Text[4];
-    public Image playerImage;
-    public Image npcImage;
+    /// <summary>
+    /// Velocidad de aparicion de texto
+    /// </summary>
+    [SerializeField]
+    private float typeSpeed = 0.1f;
 
-    public float typeSpeed = 0.1f;
-
-    bool writing = false;
-    bool allText = false;
-    bool readyNext = false;
-    bool choosing = false;
-    int nextDiag = 0;
-    int questionSelec = 0;
-    List<int> actualQuestions;
+    /// <summary>
+    /// Indica si se esta escribiendo un texto
+    /// </summary>
+    private bool writing = false;
+    /// <summary>
+    /// Indica si ya termino de aparecer todo el dialogo
+    /// </summary>
+    private bool allText = false;
+    /// <summary>
+    /// Indica si ya se puede acceder al proximo dialogo
+    /// </summary>
+    private bool readyNext = false;
+    /// <summary>
+    /// Indica si se esta eligiendo una pregunta
+    /// </summary>
+    private bool choosing = false;
+    /// <summary>
+    /// Indica cual es el proximo nodo de dialogo
+    /// </summary>
+    private int nextDiag = 0;
+    /// <summary>
+    /// Indica que pregunta se esta seleccionando
+    /// </summary>
+    private int questionSelec = 0;
+    /// <summary>
+    /// Lista donde se guardan los nodos de las preguntas
+    /// </summary>
+    private List<int> actualQuestions;
 
     void Awake()
     {
@@ -87,7 +145,7 @@ public class GraphDialogSystem : MonoBehaviour
                 questionSelec = 0;
             }
             answers[questionSelec].gameObject.transform.Find("QuestionChoicer").gameObject.SetActive(true);
-            print(questionSelec);
+            Debug.Log(questionSelec);
         }
         else if (choosing && Input.GetKeyDown(key: KeyCode.UpArrow))
         {
@@ -102,7 +160,7 @@ public class GraphDialogSystem : MonoBehaviour
                 questionSelec = actualQuestions.Count - 1;
             }
             answers[questionSelec].gameObject.transform.Find("QuestionChoicer").gameObject.SetActive(true);
-            print(questionSelec);
+            Debug.Log(questionSelec);
         }
         else if (choosing && Input.GetKeyDown(key: KeyCode.Return))
         {

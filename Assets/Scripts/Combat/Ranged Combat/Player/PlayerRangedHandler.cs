@@ -19,14 +19,14 @@ public class PlayerRangedHandler : RangedCombatSystem
         {
             if (Time.time - pressTime >= EquippedWeapon.chargeTime)
             {
-                Debug.Log("Cargado!");
+                //Debug.Log("Cargado!");
                 ShootRay(damageBuff: EquippedWeapon.chargeBonus);
             }
             else
             {
-                Debug.Log("No cargado");
+                //Debug.Log("No cargado");
                 ShootRay();
             }
         }
-    }
+    }   
 }
