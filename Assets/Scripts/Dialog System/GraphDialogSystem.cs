@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using MoreTags;
 
 ///<sumarry>
 ///Script que se encarga de controlar la aparición de los diálogos con un NPC.
@@ -20,6 +21,12 @@ public class GraphDialogSystem : MonoBehaviour
 {
     private NodeList nodeList = new NodeList();
     private GraphDialog dialogsGraph = new GraphDialog();
+
+    /// <summary>
+    /// Tag de personajes conversables
+    /// </summary>
+    [SerializeField]
+    private string tagName = "Talkable";
     
     //Todos estos son objetos pertenecientes a un canvas/objetos de UI
     /// <summary>
@@ -98,6 +105,11 @@ public class GraphDialogSystem : MonoBehaviour
     /// </summary>
     private List<int> actualQuestions;
 
+    /// <summary>
+    /// Informacion de dialogo en rango de interaccion
+    /// </summary>
+    public DialogsScript inRangeDialog;
+
     void Awake()
     {
         //Desactivando la UI al iniciar hasta que haya un dialogo
@@ -107,14 +119,25 @@ public class GraphDialogSystem : MonoBehaviour
     void Start()
     {
         //ReadFile("Dialogs/test2");
-        ReadFile("Dialogs/graph_test");
-        CreateGraph(nodeList.Diags_Nodes, dialogsGraph);
-        StartDiag();
+        //ReadFile("Dialogs/graph_test");
+        //CreateGraph(nodeList.Diags_Nodes, dialogsGraph);
+        //StartDiag();
+        //InitializeDiag("Dialogs/graph_test");
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            if (inRangeDialog != null)
+            {
+                InitializeDiag(inRangeDialog.DialogFile);
+                Debug.Log(inRangeDialog.DialogFile);
+                inRangeDialog.ChangeStatus();
+            }
+        }
+
         //Input para pasar al siguiente diálogo
         if (readyNext && Input.GetKeyDown(key: KeyCode.Return))
         {
@@ -166,6 +189,13 @@ public class GraphDialogSystem : MonoBehaviour
             //Quitar la flechita
             NextDiag(node: actualQuestions[index: questionSelec]);//dialogsGraph._nodes[actualQuestions[questionSelec]].Neighboors[0]);
         }
+    }
+
+    void InitializeDiag(string path)
+    {
+        ReadFile(path);
+        CreateGraph(nodeList.Diags_Nodes, dialogsGraph);
+        StartDiag();
     }
 
     /// <summary>
@@ -279,6 +309,7 @@ public class GraphDialogSystem : MonoBehaviour
         {
             StopAllCoroutines();
             DisableUI();
+            ResetGraph();
         }
     }
 
@@ -341,10 +372,10 @@ public class GraphDialogSystem : MonoBehaviour
     /// Función encargada de recibir todos los datos de un JSON que contiene
     /// los diálogos.
     /// </summary>
-    /// <param name="sceneName">Ruta del archivo JSON a abrir</param>
-    public void ReadFile(string sceneName)
+    /// <param name="path">Ruta del archivo JSON a abrir</param>
+    public void ReadFile(string path)
     {
-        TextAsset asset = Resources.Load(sceneName) as TextAsset;
+        TextAsset asset = Resources.Load(path) as TextAsset;
         if (asset != null)
         {
             nodeList = JsonUtility.FromJson<NodeList>(asset.text);
@@ -364,7 +395,12 @@ public class GraphDialogSystem : MonoBehaviour
             graph._nodes.Add(node, nodes[node]);
         }
     }
-    //Debería hacer una función para resetear el grafo
+    
+    void ResetGraph()
+    {
+        dialogsGraph._nodes.Clear();
+        nodeList.Diags_Nodes.Clear();
+    }
 
     public void DisableUI()
     {
@@ -410,5 +446,21 @@ public class GraphDialogSystem : MonoBehaviour
         npcText.text = "";
         npcText.enabled = false;
         npcImage.enabled = false;
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.HasTag(tagName))
+        {
+            inRangeDialog = other.gameObject.GetComponent<DialogsScript>();
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.HasTag(tagName))
+        {
+            inRangeDialog = null;
+        }
     }
 }

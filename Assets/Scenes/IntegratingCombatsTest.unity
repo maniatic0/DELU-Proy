@@ -1404,10 +1404,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: daf2c7d2338a9e04e942f1b5fdf2cf3c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  targetsPattern: Damageable.*
   equippedWeapon: {fileID: 0}
   shotSpawn: {fileID: 1501160124}
   rangedWeaponObj: {fileID: 1501160123}
   activeRanged: 0
+  dummy: {fileID: 0}
 --- !u!114 &1622877033
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2326,6 +2328,11 @@ PrefabInstance:
     - target: {fileID: 2051400329254349638, guid: 355aa5071efd1984585da5353db9ed01,
         type: 3}
       propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2051400329254349638, guid: 355aa5071efd1984585da5353db9ed01,
+        type: 3}
+      propertyPath: m_SizeDelta.y
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

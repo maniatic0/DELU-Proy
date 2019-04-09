@@ -1,0 +1,11 @@
+{
+	"Diags_Nodes":
+	[
+		{
+			"dialog_text" : "We are done talking here.",
+			"Neighboors" : [-1],
+			"question" : false,
+			"isPlayer" : false
+		}
+	]
+}

@@ -16,7 +16,6 @@ public class DialogNodes
     public bool isPlayer;
 }
 
-
 [System.Serializable]
 public class NodeList
 {
