@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(ProjectilePool))]
+[RequireComponent(typeof(HumanoidMovementAnimation))]
 //[RequireComponent(typeof(RangedWeapon))]
 public class RangedCombatSystem : MonoBehaviour
 {
@@ -85,8 +86,11 @@ public class RangedCombatSystem : MonoBehaviour
 
     private void Awake()
     {
+        Debug.Log(name);
         cam = Camera.main;
         pool = GetComponent<ProjectilePool>();
+        //Ver cuando quitar/agregar el listener para no tenerlo siempre.
+        GetComponent<HumanoidMovementAnimation>().onFlipChange.AddListener(OnFlipChange);
     }
 
     //Deberia empezar con un parametro de arma?
@@ -209,6 +213,25 @@ public class RangedCombatSystem : MonoBehaviour
         }
         //Sino, salir disparado en la direccion del click y ya hasta que algo pase y destruya el objeto
         Debug.DrawRay(transform.position, new Vector3(direction.x, direction.y, direction.z), Color.black, 5f);
+    }
+
+    /// <summary>
+    /// Maneja el sprite, posicion del shotSpawn.
+    /// </summary>
+    /// <param name="isFacingRight">Si esta viendo a la derecha</param>
+    void OnFlipChange(bool isFacingRight)
+    {
+        Vector3 pos = shotSpawn.transform.localPosition;
+        if (isFacingRight)
+        {
+            pos.x = 1f;
+        }
+        else
+        {
+            pos.x = -1f;
+        }
+        shotSpawn.transform.localPosition = pos;
+        shotSpawn.transform.gameObject.GetComponent<SpriteRenderer>().flipX = !isFacingRight;
     }
 
     protected void DebugShoot(Transform target)

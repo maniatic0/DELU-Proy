@@ -25,6 +25,7 @@ public class PlayerMovementAnimation : HumanoidMovementAnimation
     protected override void Flip()
     {
         float velX = humanoidMovement.Velocity.x;
+        //Modo melee
         if (!rangedHandler.ActiveRanged)
         {
             if (velX < 0 && isFacingRight)
@@ -40,6 +41,7 @@ public class PlayerMovementAnimation : HumanoidMovementAnimation
                 onFlipChange.Invoke(isFacingRight);
             }
         }
+        //Modo rango
         else
         {
             if (!AtRight(PlayerInput.MousePosition))

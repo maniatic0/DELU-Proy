@@ -115,7 +115,6 @@ public class GraphDialogSystem : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
         //Input para pasar al siguiente diálogo
         if (readyNext && Input.GetKeyDown(key: KeyCode.Return))
         {
@@ -218,7 +217,6 @@ public class GraphDialogSystem : MonoBehaviour
                         playerText.text = dialogsGraph._nodes[node].dialog_text;
                         break;
                     }
-
                     yield return new WaitForSeconds(typeSpeed);
                 }
             }
@@ -250,17 +248,15 @@ public class GraphDialogSystem : MonoBehaviour
         else
         {
             StartCoroutine(Question(dialogsGraph._nodes[node].Neighboors, node));
-        }
-        
+        }      
     }
-
 
     /// <summary>
     /// Función encargada de preparar la UI, variables para
     /// el siguiente diálogo y de la salida de una conversación.
     /// </summary>
     /// <param name="node">Nodo al que se accederá a continuación</param>
-    public void NextDiag(int node)
+    void NextDiag(int node)
     {
         DeactivatePlayerText();
         DeactivateNPCText();
@@ -293,7 +289,7 @@ public class GraphDialogSystem : MonoBehaviour
     /// <param name="neighbours">Opciones de diálogo posibles</param>
     /// <param name="actualNode">Nodo del cual se originan las múltiples opciones</param>
     /// <returns>Solo una corutina</returns>
-    public IEnumerator Question(List<int> neighbours, int actualNode)
+    IEnumerator Question(List<int> neighbours, int actualNode)
     {
         writing = true;
         actualQuestions = FetchAnswerNodes(neighbours);
@@ -331,7 +327,7 @@ public class GraphDialogSystem : MonoBehaviour
     /// </summary>
     /// <param name="possibleAnswers">Lista de ID (?) de los posibles diálogos.</param>
     /// <returns>Lista que contiene los nodos a los que se dirige cada opción de diálogo.</returns>
-    public List<int> FetchAnswerNodes(List<int> possibleAnswers)
+    List<int> FetchAnswerNodes(List<int> possibleAnswers)
     {
         List<int> answerNodes = new List<int>();
         foreach(int answer in possibleAnswers)
@@ -361,7 +357,7 @@ public class GraphDialogSystem : MonoBehaviour
     /// </summary>
     /// <param name="nodes">Nodos de diálogo</param>
     /// <param name="graph">Grafo a modificar</param>
-    public void CreateGraph(List<DialogNodes> nodes, GraphDialog graph)
+    void CreateGraph(List<DialogNodes> nodes, GraphDialog graph)
     {
         for (int node = 0; node < nodes.Count; node++)
         {
@@ -390,26 +386,26 @@ public class GraphDialogSystem : MonoBehaviour
         }
     }
 
-    public void ActivatePlayerText()
+    void ActivatePlayerText()
     {
         playerText.enabled = true;
         playerImage.enabled = true;
     }
 
-    public void DeactivatePlayerText()
+    void DeactivatePlayerText()
     {
         playerText.text = "";
         playerText.enabled = false;
         playerImage.enabled = false;
     }
 
-    public void ActivateNPCText()
+    void ActivateNPCText()
     {
         npcText.enabled = true;
         npcImage.enabled = true;
     }
 
-    public void DeactivateNPCText()
+    void DeactivateNPCText()
     {
         npcText.text = "";
         npcText.enabled = false;
