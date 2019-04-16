@@ -18,7 +18,7 @@ public class EffectOutput
     /// <summary>
     /// Modificador del cambio en la vida
     /// </summary>
-    public float modifier = 0;
+    public float modifier = 1;
 
     /// <summary>
     /// Obtener el cambio de vida sin modificador
