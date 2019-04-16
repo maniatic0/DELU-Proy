@@ -16,11 +16,6 @@ public class EffectOutput
     public float lifeChange = 0;
 
     /// <summary>
-    /// Modificador del cambio en la vida
-    /// </summary>
-    public float modifier {get {return EffectInfo.Modifier}};
-
-    /// <summary>
     /// Obtener el cambio de vida sin modificador
     /// </summary>
     /// <value></value>
@@ -30,7 +25,24 @@ public class EffectOutput
     /// Obtener el cambio de vida con modificador
     /// </summary>
     /// <value></value>
-    public float LifeChangeModified { get{return LifeChangeRaw * modifier;}}
+    public float LifeChangeModified { get{return LifeChangeRaw * EffectInfo.Modifier;}}
+
+    /// <summary>
+    /// Cambio en la corrupcion
+    /// </summary>
+    public float corruptionChange = 0;
+
+    /// <summary>
+    /// Obtener el cambio de la corrupcion sin modificador
+    /// </summary>
+    /// <value></value>
+    public float CorruptionChangeRaw { get{return corruptionChange;}}
+
+    /// <summary>
+    /// Obtener el cambio de la corrupcion con modificador
+    /// </summary>
+    /// <value></value>
+    public float CorruptionChangeModified { get{return CorruptionChangeRaw * EffectInfo.Modifier;}}
 
     /// <summary>
     /// Efecto de color siendo aplicado

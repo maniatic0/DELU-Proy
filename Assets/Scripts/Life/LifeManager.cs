@@ -39,6 +39,43 @@ public class LifeManager : MonoBehaviour
             return maxLife; 
             } 
         }
+
+    /// <summary>
+    /// Corrupcion Actual
+    /// </summary>
+    private float corruption;
+
+    /// <summary>
+    /// Corrupcion Actual
+    /// </summary>
+    public float Corruption { 
+        get{ 
+            return corruption; 
+            } 
+        }
+
+    /// <summary>
+    /// Maxima Corrupcion
+    /// </summary>
+    [Tooltip("Maxima Corrupcion")]
+    [SerializeField]
+    private float maxCorruption = 10.0f;
+
+    /// <summary>
+    /// Maxima Corrupcion
+    /// </summary>
+    public float MaxCorruption { 
+        get{ 
+            return maxCorruption; 
+            } 
+        }
+
+    /// <summary>
+    /// Si el humanoide es afectado por cambios de corrupcion
+    /// </summary>
+    [Tooltip("Si el humanoide es afectado por cambios de corrupcion")]
+    [SerializeField]
+    private bool useCorruption = true;
         
 
     /// <summary>
@@ -79,6 +116,30 @@ public class LifeManager : MonoBehaviour
     public LifeEvent onLifeReStart;
 
     /// <summary>
+    /// Funciones para llamar cuando la cantidad de corrupcion cambia
+    /// </summary>
+    [Tooltip("Funciones para llamar cuando la cantidad de corrupcion cambia")]
+    public LifeEvent onCorruptionChange;
+
+    /// <summary>
+    /// Funciones para llamar cuando la cantidad de corrupcion cambia por purificacion
+    /// </summary>
+    [Tooltip("Funciones para llamar cuando la cantidad de corrupcion cambia por purificacion")]
+    public LifeEvent onCorruptionChangePurify;
+
+    /// <summary>
+    /// Funciones para llamar cuando la cantidad de corrupcion cambia por mas corrupcion
+    /// </summary>
+    [Tooltip("Funciones para llamar cuando la cantidad de corrupcion cambia por mas corrupcion")]
+    public LifeEvent onCorruptionChangeCorrupt;
+
+    /// <summary>
+    /// Funciones para llamar cuando el humanoide es purificado
+    /// </summary>
+    [Tooltip("Funciones para llamar cuando el humanoide es purificado")]
+    public LifeEvent onPurification;
+
+    /// <summary>
     /// Manejador de Cambios de Color por Vida
     /// </summary>
     private LifeColorHandler lifeColor;
@@ -89,6 +150,7 @@ public class LifeManager : MonoBehaviour
     protected virtual void Awake()
     {
         life = maxLife;
+        corruption = maxCorruption;
         lifeColor = GetComponent<LifeColorHandler>();
         lifeColor.SetupLifeManager(this);
     }
@@ -109,7 +171,7 @@ public class LifeManager : MonoBehaviour
             }
             else
             {
-                ChangeLife(continueApplying[i].ApplyChange(this));
+                Change(continueApplying[i].ApplyChange(this));
             }
         }
     }
@@ -124,24 +186,19 @@ public class LifeManager : MonoBehaviour
             continueApplying.Add(effectInfo);
         }
         else {
-            ChangeLife(effectInfo.ApplyChange(this));
+            Change(effectInfo.ApplyChange(this));
         }
     }
 
     /// <summary>
-    /// Aplicar el cambio de vida
+    /// Aplicar el cambio
     /// </summary>
-    /// <param name="change">Cambio a aplicar</param>
-    protected void ChangeLife(EffectOutput effectChange) {
+    /// <param name="effectChange">Cambio a aplicar</param>
+    protected void Change(EffectOutput effectChange) {
 
         if (effectChange.colorEffect)
         {
             lifeColor.ApplyChange(effectChange);
-        }
-
-        if (Mathf.Approximately(effectChange.LifeChangeRaw, 0.0f))
-        {
-            return;
         }
 
         life += effectChange.LifeChangeModified;
@@ -149,6 +206,16 @@ public class LifeManager : MonoBehaviour
         if (life > maxLife)
         {
             life = maxLife;
+        }
+
+        if (useCorruption)
+        {
+            corruption += effectChange.CorruptionChangeModified;
+
+            if (corruption > maxCorruption)
+            {
+                corruption = maxCorruption;
+            }
         }
 
         bool death = life <= 0;
@@ -159,28 +226,59 @@ public class LifeManager : MonoBehaviour
             continueApplying.Clear();
             lifeColor.StopAll();
         }
-             
-        onLifeChange.Invoke(this);
 
-        if (effectChange.lifeChange >= 0)
+        bool purified = corruption <= 0;
+
+        if (useCorruption && purified)
         {
+            corruption = 0;
+            continueApplying.Clear();
+            lifeColor.StopAll();
+        }
+
+        if (effectChange.LifeChangeRaw > 0)
+        {
+            onLifeChange.Invoke(this);
             onLifeChangeHeal.Invoke(this);
-        } else {
+        } else if (effectChange.LifeChangeRaw < 0) {
+            onLifeChange.Invoke(this);
             onLifeChangeDamage.Invoke(this);
         }
+
+        if (useCorruption)
+        {
+            if (effectChange.CorruptionChangeRaw > 0)
+            {
+                onCorruptionChange.Invoke(this);
+                onCorruptionChangePurify.Invoke(this);
+            } else if (effectChange.CorruptionChangeRaw < 0) {
+                onCorruptionChange.Invoke(this);
+                onCorruptionChangeCorrupt.Invoke(this);
+            }
+        }
+
+        
 
         if (death)
         {
             onLifeEnd.Invoke(this);
+            return;
+        }
+
+        if (useCorruption && purified)
+        {
+            onPurification.Invoke(this);
+            return;
         }
 
     }
 
     /// <summary>
-    /// Revivir al jugador
+    /// Revivir al humanoide
     /// </summary>
     public virtual void Revive() {
         life = maxLife;
+        corruption = maxCorruption;
         onLifeReStart.Invoke(this);
     }
 
