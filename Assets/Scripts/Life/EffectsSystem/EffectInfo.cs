@@ -130,7 +130,6 @@ public class EffectInfo
     /// <returns>Cambio a aplicar</returns>
     public EffectOutput ApplyChange(LifeManager lm) {
         EffectOutput res = Effect.ApplyChange(lm, this);
-        res.modifier = Modifier;
         return res;
     }
 }
