@@ -14,7 +14,6 @@ public class MultiNode : DialogBaseNode
     public void ChooseOption(int choice)
     {
         Debug.Log("Opcion: " + choice + " elegida!");
-        Debug.Log(choices.Count);
         NodePort port = GetOutputPort("choices " + choice);
         DialogBaseNode node = port.GetConnection(0).node as DialogBaseNode;
         (graph as DialogGraph).SetCurrent(node);

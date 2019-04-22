@@ -21,9 +21,7 @@ public class DialogSystemNode : MonoBehaviour
     /// <summary> Retrato asociado al no jugador </summary>
     [SerializeField]
     private Image otherPortrait;
-    /// <summary>
-    /// Texto asociado a la pregunta/eleccion que hacer
-    /// </summary>
+    /// <summary> Texto asociado a la pregunta/eleccion que hacer </summary>
     [SerializeField]
     private Text mainChoiceText;
 
@@ -36,20 +34,20 @@ public class DialogSystemNode : MonoBehaviour
     [SerializeField]
     private float typeSpeed = 0.1f;
     /// <summary> Indica si se esta en un dialogo </summary>
-    private bool inDialog = false;
+    protected bool inDialog = false;
     /// <summary> Indica si se esta escribiendo algo </summary>
-    private bool writing = false;
+    protected bool writing = false;
     /// <summary> Indica si se esta eligiendo </summary>
-    private bool choosing = false;
+    protected bool choosing = false;
     /// <summary> Indica si ya se puede pasar al proximo dialogo </summary>
-    private bool readyForNext = false;
+    protected bool readyForNext = false;
     /// <summary> Indica si se quiere saltar el typeo </summary>
-    private bool allText = false;
+    protected bool allText = false;
 
     /// <summary> Numero de elecciones del multi nodo </summary>
-    private int choicesNumber;
+    protected int choicesNumber;
     /// <summary> Eleccion seleccionada </summary>
-    private int actualChoice = 0;
+    protected int actualChoice = 0;
 
     /// <summary> Nodo actual del grafo </summary>
     [SerializeField] private DialogBaseNode currentNode;
@@ -58,103 +56,82 @@ public class DialogSystemNode : MonoBehaviour
 
     private void Start()
     {
-        currentNode = dialogGraph.start;
+        parentObject.SetActive(false);
     }
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.E) && !inDialog) //&& !inDialog)
-        {
-            StartDialog();
-        }
-        else if (Input.GetKeyDown(KeyCode.E) && inDialog && !writing && readyForNext)
-        {
-            MoveToNext();
-        }
-
-        if (Input.GetKeyDown(KeyCode.DownArrow) && choosing)
-        {   
-            if (actualChoice < choicesNumber - 1)
-            {
-                actualChoice += 1;
-            }
-            else
-            {
-                actualChoice = 0;
-            }
-            Debug.Log("Opcion seleccionada: " + actualChoice);
-        }
-        if (Input.GetKeyDown(KeyCode.Return) && choosing)
-        {
-            MoveToNext();
-        }
-    }
-
-    /// <summary> Inicia el dialogo</summary>
-    void StartDialog()
+    /// <summary> Inicia el dialogo </summary>
+    public virtual void StartDialog(DialogGraph graph)
     {
         inDialog = true;
+        dialogGraph = graph;
         currentNode = dialogGraph.start;
         parentObject.SetActive(true);
         ProcessNode(currentNode);
     }
 
-    void EndDialog()
+    /// <summary> Finaliza el dialogo </summary>
+    public virtual void EndDialog()
     {
-
+        //Eventos de dialogo
+        TriggersManager.RaiseOnDialogEnd();
+        writing = inDialog = allText = choosing = readyForNext = false;
+        actualChoice = choicesNumber = 0;
+        //Se tienen que parar todas las corutinas de typeo para evitar que si se vuelve a abrir un dialogo
+        //muy rapido, escriban dos corutinas writing al mismo tiempo
+        StopAllCoroutines();
     }
 
     /// <summary> Procesa el nodo segun su tipo para iniciar el siguiente dialogo </summary>
     /// <param name="node">Nodo a procesar</param>
     void ProcessNode(DialogBaseNode node)
     {
-        //Debug.Log(node.GetType());
+        ////Debug.Log(node.GetType());
         if (node.GetType() == typeof(DialogNode)) {
-            //Debug.Log("Node de tipo dialogo!");
+            ////Debug.Log("Node de tipo dialogo!");
             ProcessDialogNode((DialogNode)node);
         }
         else if (node.GetType() == typeof(MultiNode))
         {
-            //Debug.Log("Node de tipo Multi!");
+            ////Debug.Log("Node de tipo Multi!");
             ProcessMultiNode(node as MultiNode);
         }
-    }
-
-    IEnumerator DebugType(DialogBaseNode node)
-    {
-        while (node == null)
+        else if (node.GetType() == typeof(ChoiceNode))
         {
-            Debug.Log("Empty");
-            yield return new WaitForSeconds(1f);
-        }
-        while (node != null)
-        {
-            ProcessNode(node);
-            yield return new WaitForSeconds(1f);
+            ProcessChoiceNode(node as ChoiceNode);
         }
     }
 
     /// <summary> Procesa un nodo de dialogo </summary>
-    /// <param name="node">Nodo de dialogo</param>
+    /// <param name="node">Nodo de dialogo a procesar</param>
     void ProcessDialogNode(DialogNode node)
     {
-        //QUE HACER CON ESTO
         StartCoroutine(TypeDialog(node));
     }
 
     /// <summary> Procesa un nodo multi opciones </summary>
-    /// <param name="node">Nodo multi opciones</param>
+    /// <param name="node">Nodo multi opciones a procesar</param>
     void ProcessMultiNode(MultiNode node)
     {
-        //QUE HACER COSO
         actualChoice = 0;
         StartCoroutine(TypeMultiNode(node));
     }
 
-    /// <summary> Cambia al siguiente nodo del dialogo </summary>
-    void MoveToNext()
+    /// <summary> Procesa un nodo choice </summary>
+    /// <param name="node">Nodo choice a procesar</param>
+    void ProcessChoiceNode(ChoiceNode node)
     {
-        //Debug.Log(currentNode.GetType());
+        if (node.eventName == null || node.eventName == "")
+        {
+            Debug.LogError("Choice node can't have null or empty name string!");
+            return;
+        }
+        EventsScript.events.ProcessEventString(node.eventName);
+        MoveToNext();
+    }
+
+    /// <summary> Cambia al siguiente nodo del dialogo </summary>
+    public void MoveToNext()
+    {
         if (currentNode.GetType() != typeof(MultiNode))
         {
             currentNode.NextNode();
@@ -162,19 +139,21 @@ public class DialogSystemNode : MonoBehaviour
         else if (currentNode.GetType() == typeof(MultiNode))
         {
             (currentNode as MultiNode).ChooseOption(actualChoice);
+            choosing = false;
         }
+
         currentNode = dialogGraph.current;
+
         if (currentNode != null)
         {
             ProcessNode(currentNode);
             return;
         }
-        Debug.Log("Finalizado dialogo!");
+        //Debug.Log("Finalizado dialogo!");
         DisableUI();
-        //Stop
-
+        EndDialog();
     }
-    #region UI
+
     //Importante tener los GameObjects asociados activados, esto solo desactiva los componentes.
 
     /// <summary> Activa UI de dialogo del jugador </summary>
@@ -205,12 +184,14 @@ public class DialogSystemNode : MonoBehaviour
         otherPortrait.enabled = false;
     }
 
+    /// <summary> Activa UI de multi nodo </summary>
     void EnableChoices()
     {
         mainChoiceText.enabled = true;
         playerPortrait.enabled = true;
     }
 
+    /// <summary> Desactiva UI de multi nodo </summary>
     void DisableChoices()
     {
         mainChoiceText.enabled = false;
@@ -221,11 +202,27 @@ public class DialogSystemNode : MonoBehaviour
         }
     }
 
+    public void EnableChoicePointer(int choice)
+    {
+        //Debug.Log("asd");
+        choicesText[choice].transform.Find("QuestionChoicer").GetComponent<Image>().enabled = true;
+    }
+
+    public void DisableChoicePointer(int choice)
+    {
+        //Debug.Log("bye");
+        choicesText[choice].transform.Find("QuestionChoicer").GetComponent<Image>().enabled = false;
+    }
+
+    /// <summary> Activa UI de pregunta de index choice en choicesText </summary>
+    /// <param name="choice">Pregunta a activar UI</param>
     void EnableChoice(int choice)
     {
         choicesText[choice].enabled = true;
     }
 
+    /// <summary>
+    /// Desactiva UI del sistema de dialogo junto a su gameObject padre </summary>
     void DisableUI()
     {
         DisablePlayer();
@@ -234,65 +231,65 @@ public class DialogSystemNode : MonoBehaviour
         parentObject.SetActive(false);
     }
 
-    //void EnableMulti
-    //void DisableMulti
-    #endregion
+    /// <summary> Corutina encarga de escribir el dialogo letra por letra </summary>
+    /// <param name="textBox">Caja de texto a modificar</param>
+    /// <param name="dialog">String del dialogo a escribir</param>
+    IEnumerator WriteText(Text textBox, string dialog)
+    {
+        foreach (char letter in dialog)
+        {
+            textBox.text += letter;
+            yield return new WaitForSeconds(typeSpeed);
+            if (allText)
+            {
+                textBox.text = dialog;
+                break;
+            }
+        }
+        allText = false;
+    }
+
+    //yield new StartCoroutine... sirve para pausar la ejecucion de la funcion/corutina principal
+    //mientras corre la corutina writing, si esto no se hace, en el caso de las preguntas se escribiran
+    //todas al mismo tiempo junto a la pregunta. Tambien se evita que al tratar de que salga todo el texto
+    //de un dialogo, tambien se salte al siguiente.
 
     /// <summary> Typea un nodo de dialogo </summary>
     /// <param name="node">Nodo a typear</param>
     IEnumerator TypeDialog(DialogNode node)
     {
-        //Debug.Log("Escribiendito");
         string diagText = node.dialog_text;
         playerText.text = "";
         otherText.text = "";
 
         allText = false;
         writing = true;
+        readyForNext = false;
         DisableChoices();
 
         if (node.isPlayer)
         {
             DisableOther();
             EnablePlayer();
-            foreach (char letter in diagText)
-            {
-                playerText.text += letter;
-                yield return new WaitForSeconds(typeSpeed);
-                if (allText)
-                {
-                    playerText.text = diagText;
-                    break;
-                }
-            }
+            yield return StartCoroutine(WriteText(playerText, diagText));
         }
         else
         {
             DisablePlayer();
             EnableOther();
-            foreach (char letter in diagText)
-            {
-                otherText.text += letter;
-                yield return new WaitForSeconds(typeSpeed);
-                if (allText)
-                {
-                    otherText.text = diagText;
-                    break;
-                }
-            }
+            yield return StartCoroutine(WriteText(otherText, diagText));
         }
         writing = false;
         readyForNext = true;
-        allText = true;
+        allText = false;
     }
 
     /// <summary> Typea un nodo multiple </summary>
     /// <param name="node">Nodo a typear con opciones</param>
     IEnumerator TypeMultiNode(MultiNode node)
     {
-        //Debug.Log("Escribiendito");
         string mainText = node.multiText;
-        Debug.Log(mainText);
+        ////Debug.Log(mainText);
         List<Answer> answers = node.choices;
 
         playerText.text = "";
@@ -308,16 +305,8 @@ public class DialogSystemNode : MonoBehaviour
         DisableChoices();
         EnableChoices();
 
-        foreach (char letter in mainText)
-        {
-            mainChoiceText.text += letter;
-            yield return new WaitForSeconds(typeSpeed);
-            if (allText)
-            {
-                mainChoiceText.text = mainText;
-                break;
-            }
-        }
+        //Se empieza
+        yield return StartCoroutine(WriteText(mainChoiceText, mainText));
         allText = false;
 
         int index = 0;
@@ -325,20 +314,11 @@ public class DialogSystemNode : MonoBehaviour
         {
             string choiceText = answer.choiceText;
             choicesText[index].text = "";
-            EnableChoice(index);          
-            //Debug.Log(choiceText);
-            foreach (char letter in choiceText)
-            {
-                choicesText[index].text += letter;
-                yield return new WaitForSeconds(typeSpeed);
-                if (allText)
-                {
-                    choicesText[index].text += letter;
-                    break;
-                }
-            }
+            EnableChoice(index);
+            yield return StartCoroutine(WriteText(choicesText[index], choiceText));
             index += 1;
         }
+        EnableChoicePointer(0);
         allText = false;
         writing = false;
         choosing = true;

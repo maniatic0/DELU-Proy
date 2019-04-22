@@ -22,4 +22,9 @@ public class DialogNodeEditor : NodeEditor
             graph.SetStart(node);
         }
     }
+
+    public override int GetWidth()
+    {
+        return 400;
+    }
 }

@@ -8,4 +8,8 @@ using XNodeEditor;
 [CustomNodeEditor(typeof(ChoiceNode))]
 public class ChoiceNodeEditor : NodeEditor
 {
+    public override int GetWidth()
+    {
+        return 400;
+    }
 }

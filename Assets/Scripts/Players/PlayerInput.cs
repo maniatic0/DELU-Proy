@@ -206,6 +206,46 @@ public class PlayerInput : MonoBehaviour
         get { return Manager.combatType;  }
     }
 
+    /// <summary>
+    /// Nombre del Input para interactuar
+    /// </summary>
+    [SerializeField]
+    [Tooltip("Nombre del Input para interactuar")]
+    private string interactButton = "Interact";
+
+    /// <summary>
+    /// Bool del input para interactuar
+    /// </summary>
+    private bool interactDown = false;
+
+    /// <summary>
+    /// Bool del Input para interactuar
+    /// </summary>
+    public static bool Interact
+    {
+        get { return Manager.interactDown; }
+    }
+
+    /// <summary>
+    /// Nombre del Input para ir al siguiente dialogo o elegir una opcion
+    /// </summary>
+    [SerializeField]
+    [Tooltip("Nombre del Input para ir al siguiente dialogo o elegir")]
+    private string nextDialogButton = "Next Dialog";
+
+    /// <summary>
+    /// Bool del Input para ir al siguiente dialogo o elegir una opcion
+    /// </summary>
+    private bool nextDialogDown = false;
+
+    /// <summary>
+    /// Bool del Input para ir al siguiente dialogo o elegir una opcion
+    /// </summary>
+    public static bool NextDialog
+    {
+        get { return Manager.nextDialogDown; }
+    }
+
 
     private void Awake()
     {
@@ -241,6 +281,8 @@ public class PlayerInput : MonoBehaviour
 
         changeWeapon = Input.GetAxis(changeButton);
         combatType = Input.GetButtonDown(combatTypeButton);
-    }
 
+        interactDown = Input.GetButtonDown(interactButton);
+        nextDialogDown = Input.GetButtonDown(nextDialogButton);
+    }
 }
