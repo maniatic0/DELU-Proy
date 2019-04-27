@@ -15,4 +15,4 @@ MonoBehaviour:
   colorEffect: {fileID: 11400000, guid: 7385e20a44794954bbcdc1f675bcad43, type: 2}
   applyMoreThanOnce: 0
   applyingTime: 0
-  basicDamage: 2
+  basicDamage: 1

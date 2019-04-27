@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class ProjectilePool : MonoBehaviour
 {
-    //Si alguien quiere saber que esto, digame y lo explico :PS (Pedro)
     [SerializeField]
     private int poolSize = 20;
     [SerializeField]
@@ -14,7 +13,7 @@ public class ProjectilePool : MonoBehaviour
     private GameObject projectileBase;
     private List<GameObject> projectilePool;
 
-    protected void Start()
+    private void Awake()
     {
         //Initializing pool
         projectilePool = new List<GameObject>();

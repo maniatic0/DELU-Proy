@@ -90,22 +90,23 @@ public class SimpleProjectile : MonoBehaviour
     /// <param name="weapon">Arma de rango originaria del dano</param>
     /// <param name="spawner">De donde sale el proyectil</param>
     /// <param name="originObject">Quien dispara el proyectil</param>
-    public void InitializeProjectile(RangedWeapon weapon, Transform spawner, GameObject originObject)
+    public void InitializeProjectile(ProjectileWeapon weapon, Transform spawner, GameObject originObject, float dmgBuff = 1f)
     {
-        if (weapon.projectileSprite != VFX_SR.sprite)
+        if (weapon.ProjectileSprite != VFX_SR.sprite)
         {
-            UpdateSprite(weapon.projectileSprite);
-        }
-
+            Debug.Log("Updating projectile sprite!");
+            UpdateSprite(weapon.ProjectileSprite);
+        }   
         if (spawner != shotSpawn)
         {
             shotSpawn = spawner;
-        }
-
-        if (weapon.damageType != damageType)
+        }    
+        if (weapon.DamageType != damageType)
         {
-            damageType = weapon.damageType;
+            damageType = weapon.DamageType;
         }
+        damageBuff = dmgBuff;
+
         shooter = originObject;
         Physics.IgnoreCollision(GetComponent<Collider>(), shooter.GetComponent<Collider>(), true);
         info = new EffectInfo(damageType, gameObject);
@@ -116,14 +117,13 @@ public class SimpleProjectile : MonoBehaviour
     /// </summary>
     void ChangeRotation()
     {
-        //Debug.Log("Rotating...");
         bool flipped = shooter.GetComponent<SpriteFlip>().FlipX;
         //Producto cruz loco que calcula el angulo
         //float angle = Vector3.Angle(Vector3.right, new Vector3(direction.x, 0, direction.z));
         //Vector3 cross = Vector3.Cross(Vector3.right, new Vector3(direction.x, 0, direction.z));
         //angle *= (cross.y < 0) ? -1 : 1;
         //VFX.transform.Rotate(Vector3.up * angle);
-
+    
         Vector2 upVector = Vector2.Perpendicular(new Vector2(direction.x, direction.y));
         Vector3 forwardVector;
         if (!flipped)
@@ -138,44 +138,20 @@ public class SimpleProjectile : MonoBehaviour
         transform.rotation = desiredRotation;
     }
 
-    /// <summary>
-    /// Funcion cuando se dispara a un objetivo
-    /// </summary>
-    /// <param name="newTarget">Objetivo</param>
-    /// <param name="buff">Bufo de dano</param>
-    public void ShootAtTarget(Transform newTarget, float buff = 1f)
-    {
-        target = newTarget;
-        isTarget = true;
-        direction = (target.position - shotSpawn.position).normalized;
-        transform.position = shotSpawn.position;
-        damageBuff = buff;
-        ChangeRotation();
-        StartCoroutine(DestroyTimer(lifeTime));
-    }
-
-    /// <summary>
-    /// Funcion usado cuando no se dispara a un objetivo
-    /// </summary>
-    /// <param name="hitPoint">A que punto se dispara</param>
-    public void ShootAtNothing(Vector3 hitPoint)
+    /// <summary> Metodo usado para disparar el projectil </summary>
+    public void ShootProjectile(Vector3 projDirection)
     {
         isTarget = false;
         target = null;
-        //Debug.Log("player: " + shotSpawn.position + " spot: " + hitPoint);
-        //En este caso, el valor de y es arbitrario, es para mantener una distancia del suelo constante en todos los disparos.
-        //direction = new Vector3(hitPoint.x, 1.2f, hitPoint.z) - shotSpawn.position;
-        //Tambien se puede hacer que dispare donde sea
-        direction = (hitPoint - shotSpawn.position).normalized;
+        direction = projDirection;
         transform.position = shotSpawn.position;
+
         ChangeRotation();
-        StartCoroutine(DestroyTimer(lifeTime));
+        //StartCoroutine(DestroyTimer(lifeTime));
         //En el tiempo se debe de poner cuanto tiempo durara la flecha en el escenario.
     }
 
-    /// <summary>
-    /// Funcion que le aplica dano al objetivo
-    /// </summary>
+    /// <summary> Funcion que le aplica dano al objetivo </summary>
     void DoDamage(Transform hitted, float damageBuff = 1f)
     {
         Debug.Log(hitted.name);
@@ -184,6 +160,8 @@ public class SimpleProjectile : MonoBehaviour
             //Debug.Log("Target is damagable.");
             GameObject objective = hitted.gameObject;
             LifeManager lifeManager = objective.GetComponent<LifeManager>();
+            //Creo que deberia ser weapon damage + damage*porcentaje dado a que para no tener que crear
+            //Un monton de efectos, se usa uno de dano base con dano 1
             lifeManager.ApplyChange(info.StartTimeCount(damageBuff));
         }
     }

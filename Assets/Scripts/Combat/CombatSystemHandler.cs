@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class CombatSystemHandler : MonoBehaviour
 {
+    //Generalizarlo dado a que puede que se hagan comportamientos de enemigos que cambien de arma
+
     /// <summary>
     /// Inventario de armas melee disponibles
     /// </summary>
@@ -13,7 +15,7 @@ public class CombatSystemHandler : MonoBehaviour
     /// Inventario de armas de rango disponibles
     /// </summary>
     [SerializeField]
-    private List<RangedWeapon> rangedWeapons;
+    private List<RangedWeaponSO> rangedWeapons;
 
     /// <summary>
     /// Bool que indica si se esta cambiando de arma
@@ -49,6 +51,7 @@ public class CombatSystemHandler : MonoBehaviour
     /// </summary>
     private PlayerMeleeCombat meleeSystem;
 
+
     private void Awake()
     {
         rangedSystem = GetComponent<PlayerRangedHandler>();
@@ -74,10 +77,12 @@ public class CombatSystemHandler : MonoBehaviour
         if (inMelee)
         {
             //Se desactiva el sistema de combate por rango
-            rangedSystem.DisabeRangedCombat();
+            rangedSystem.DisableRangedCombat();
             inRange = false;
 
             //Se activa el sistema de combate melee
+            Debug.Log(meleeSystem.Weapon);
+            Debug.Log(meleeWeapons[meleeEquipped]);
             meleeSystem.Weapon = meleeWeapons[meleeEquipped];
             meleeSystem.ActiveMeleeCombat = true;
             inMelee = true;
@@ -92,8 +97,7 @@ public class CombatSystemHandler : MonoBehaviour
 
             //Se desactiva el sistema de combate melee
             meleeSystem.ActiveMeleeCombat = false;
-            inMelee = false;
-            
+            inMelee = false;           
         }
     }
 
@@ -123,7 +127,7 @@ public class CombatSystemHandler : MonoBehaviour
             }
         else
         {
-            if (rangedEquipped < meleeWeapons.Count - 1)
+            if (rangedEquipped < rangedWeapons.Count - 1)
             {
                 rangedEquipped += 1;
             }
@@ -163,11 +167,6 @@ public class CombatSystemHandler : MonoBehaviour
         EquipNewWeapon();
     }
 
-    //Preguntar si se va a poder dejar armas y cosas asi
-    public void OnWeaponRemove()
-    {
-
-    }
 
     /// <summary>
     /// Funcion que inicia, espera, creo que ni se usa
@@ -177,7 +176,7 @@ public class CombatSystemHandler : MonoBehaviour
     {
         if (isMelee)
         {
-            rangedSystem.DisabeRangedCombat();
+            rangedSystem.DisableRangedCombat();
             meleeSystem.Weapon = meleeWeapons[0];
             meleeSystem.ActiveMeleeCombat = true;
             inMelee = true;

@@ -17,15 +17,15 @@ public class PlayerDialogHandler : DialogSystemNode
 
     private PlayerMovement playerMovement;
     private PlayerMeleeCombat meleeCombat;
-    private PlayerRangedHandler rangedCombat;
-    private CombatSystemHandler combatHandler;
+    //private PlayerRangedHandler rangedCombat;
+    //private CombatSystemHandler combatHandler;
 
     private void Awake()
     {
         playerMovement = GetComponent<PlayerMovement>();
         meleeCombat = GetComponent<PlayerMeleeCombat>();
-        rangedCombat = GetComponent<PlayerRangedHandler>();
-        combatHandler = GetComponent<CombatSystemHandler>();
+        //rangedCombat = GetComponent<PlayerRangedHandler>();
+        //combatHandler = GetComponent<CombatSystemHandler>();
     }
 
     private void Update()

@@ -289,4 +289,13 @@ public class LifeManager : MonoBehaviour
     public void DebugLifeChange(LifeManager lm) {
         Debug.Log("LifeChange " + lm.Life.ToString(), lm);
     }
+
+    /// <summary>
+    /// Muestra en Consola el Cambio de Corrupcion
+    /// </summary>
+    /// <param name="lm">LifeManager a medir</param>
+    public void DebugCorruptionChange(LifeManager lm)
+    {
+        Debug.Log("CorruptionChange " + lm.Corruption.ToString(), lm);
+    }
 }

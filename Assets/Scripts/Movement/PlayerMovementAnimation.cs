@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(PlayerRangedHandler))]
+//[RequireComponent(typeof(PlayerRangedHandler))]
 public class PlayerMovementAnimation : HumanoidMovementAnimation
 {
     /// <summary>
@@ -59,6 +59,9 @@ public class PlayerMovementAnimation : HumanoidMovementAnimation
         }
     }
 
+    //Problema, este coso no detecta bien la posicion del mouse cuando esta en 
+    //posiciones distintas a x = 0 por alguna razon
+
     /// <summary>
     /// Devuelve un bool que indica si el mouse esta a la derecha del jugador
     /// </summary>
@@ -68,6 +71,7 @@ public class PlayerMovementAnimation : HumanoidMovementAnimation
     {
         mPos.z = -(Camera.main).transform.position.z;
         Vector2 worldPos = (Camera.main).ScreenToWorldPoint(mPos);
+        //Debug.Log("Player: " + transform.position.x + " Mouse: " + worldPos.x);
         if (transform.position.x < worldPos.x)
         {
             return true;

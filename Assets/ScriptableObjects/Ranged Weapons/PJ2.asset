@@ -9,13 +9,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8fd70566819db294b8a3e067f0151909, type: 3}
-  m_Name: Normal Bow
-  m_EditorClassIdentifier: 
-  damageType: {fileID: 11400000, guid: 33ddbf1c1bd53704bb03e8787e2de01a, type: 2}
-  damage: 20
-  fireRate: 3
-  chargeTime: 5
+  m_Script: {fileID: 11500000, guid: 70367a984f031634cb55235889d8c10d, type: 3}
+  m_Name: PJ2
+  m_EditorClassIdentifier: Assembly-CSharp::ProjectileWeaponSO
+  damageType: {fileID: 11400000, guid: 77d7e92908dc7a94e86be873ab6bd7a7, type: 2}
+  damage: 1
+  weaponSprite: {fileID: 21300002, guid: 4d89932870ddb1b46aab1541cc0435df, type: 3}
+  fireRate: 1
+  chargeTime: 1.25
   chargeBonus: 1.25
-  weaponSprite: {fileID: 21300000, guid: 8eb26412272aa0647bb007f35c24bf29, type: 3}
   projectileSprite: {fileID: 21300000, guid: 8eb26412272aa0647bb007f35c24bf29, type: 3}
