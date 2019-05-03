@@ -6,19 +6,25 @@ using XNode;
 
 public class ChoiceNode : DialogBaseNode {
 
+    public string eventName = "";
+
     protected override void Init()
     {
         base.Init();
 
     }
 
-    // Return the correct value of an output port when requested
-    public override object GetValue(NodePort port)
+    public override void NextNode()
     {
-        return null; // Replace this
-    }
-
-    public void TriggerEvent()
-    {
+        DialogGraph target = graph as DialogGraph;
+        NodePort outPort = GetOutputPort("output");
+        if (outPort.IsConnected)
+        {
+            target.SetCurrent(GetOutputPort("output").Connection.node as DialogBaseNode);
+        }
+        else
+        {
+            target.SetCurrent(null);
+        }
     }
 }

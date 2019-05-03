@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 959c1366ee91a1b4598c50125aefa5b9, type: 3}
   m_Name: PurificationTestColor
   m_EditorClassIdentifier: 
-  colorToApply: {r: 0.90357566, g: 0.9245283, b: 0.71084017, a: 0.79607844}
+  colorToApply: {r: 0.88028413, g: 0.9245283, b: 0.5189569, a: 1}
   applyingTime: 0.5
