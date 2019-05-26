@@ -82,7 +82,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 404fb2ebf0bb49943bf0272b9286a7be, type: 3}
+  m_Sprite: {fileID: 21300006, guid: 950e249b7f82cd749887756e3fbeed71, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -148,6 +148,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxSpeed: 7
+  activeMovement: 1
 --- !u!114 &1731065113704288251
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -243,23 +244,23 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-    m_TypeName: LifetEvent, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    m_TypeName: LifeEvent, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
   onLifeChangeHeal:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: LifetEvent, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    m_TypeName: LifeEvent, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
   onLifeChangeDamage:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: LifetEvent, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    m_TypeName: LifeEvent, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
   onLifeEnd:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: LifetEvent, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    m_TypeName: LifeEvent, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
   onLifeReStart:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: LifetEvent, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    m_TypeName: LifeEvent, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
 --- !u!114 &4337473584103584859
 MonoBehaviour:
   m_ObjectHideFlags: 0
