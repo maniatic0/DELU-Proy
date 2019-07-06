@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using XNode;
 
-[CreateAssetMenu]
+[CreateAssetMenu(menuName = "Grafo de dialogo")]
 public class DialogGraph : NodeGraph {
     public DialogBaseNode current;
     public DialogBaseNode start;
